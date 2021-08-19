@@ -11,5 +11,5 @@ class UserAdmin(auth_admin.UserAdmin):
     add_form = UserCreationForm
     model = User
     fieldsets = auth_admin.UserAdmin.fieldsets + (
-        ("Campos adicionais", {"fields": ("",)}),
+        ("Campos adicionais", {"fields": ("idade", "foto", "telefone_pessoal", "telefone_comercial", "cpf", "data_contratacao", "demitido", "ultima_mudanca")}),
     )
