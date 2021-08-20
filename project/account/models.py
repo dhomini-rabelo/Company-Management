@@ -9,6 +9,7 @@ class User(AbstractUser):
     telefone_pessoal = CharField('Telefone pessoal', max_length=20, blank=True, null=True)
     telefone_comercial = CharField('Telefone de trabalho', max_length=25, blank=True, null=True)
     cpf = CharField('CPF', max_length=25, blank=True, null=True)
+    empresario = BooleanField(default=False, blank=True, null=True)
     
     def __str__(self):
         return self.username

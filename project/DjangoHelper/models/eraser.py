@@ -14,7 +14,7 @@ class Eraser(DjangoBase):
         reading = self.read(self.path)
         dels = []
         for line in reading:
-            if line != '\n' and line.strip()[0] == '#':
+            if line != '\n' and (not check_null(line.strip())) and line.strip()[0] == '#':
                 dels.append(line)
         for disponsable_line in dels:
             reading.remove(disponsable_line)
