@@ -8,7 +8,9 @@ class DjangoBase:
     @staticmethod
     def adapt_path(path: str):
         backslash = '\*'[0]
-        return path.replace(backslash, '/')
+        if backslash in path:
+            path.replace(backslash, '/')
+        return path 
     
     @staticmethod
     def adapt_pyname(archive_name: str):

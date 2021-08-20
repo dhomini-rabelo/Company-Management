@@ -37,5 +37,5 @@ def assert_folder_existence(path: str):
     
 
 def check_null(obj):
-    return True if len(obj) < 1 else False
+    return True if (obj is None or len(obj) == 0) else False
     

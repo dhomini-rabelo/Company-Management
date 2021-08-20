@@ -6,28 +6,23 @@ import io
 
 
 class Eraser(DjangoBase):
-    def __init__(self, base_path: str, archive_path: str):
-        self.base_path = self.adapt_path(base_path)
-        self.archive_path = self.adapt_path(archive_path)
-        self.path = f'{self.base_path}/{self.archive_path}'
+    def __init__(self, path: str):
+        self.path = self.adapt_path(path)
         assert_file_existence(self.path)
         
-    def read(self):
-        return super.read(self.path)
-        
     def one_line(self):
-        reading = self.read()
+        reading = self.read(self.path)
         dels = []
         for line in reading:
-            if check_null(line) and line.strip()[0] == '#':
+            if line != '\n' and line.strip()[0] == '#':
                 dels.append(line)
         for disponsable_line in dels:
             reading.remove(disponsable_line)
         return reading
     
     def initial_lines(self):
-        reading = self.read()
-        if check_null(reading) and (reading[0][:3] == '"""'):
+        reading = self.read(self.path)
+        if (not check_null(reading)) and (reading[0][:3] == '"""'):
             for index_, line in enumerate(reading[1:]):
                 if '"""' in line:
                     end_comment = index_
@@ -60,8 +55,4 @@ def delete_comments_by_folder(base_path: str, folder_name: str):
         for item in wp.iterdir():
             if item.suffix == '.py':
                 response(f'Apagando comentários {item.name}')
-                delete_comments_by_arquive(item)
-
-        
-        
-    
+                delete_comments_by_arquive(str(item))
