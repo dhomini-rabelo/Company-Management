@@ -53,7 +53,7 @@ class DjangoApp(DjangoBase):
     def create_url_archive(self):
         with io.open(f'{self.path}/urls.py', 'w', encoding='utf-8') as arc:
             arc.write('from django.urls import path\nfrom .views import *\n')
-            arc.write('\nurlpatterns = [\n\n]')
+            arc.write('\nurlpatterns = [\n\n]\n')
             response(f'arquivo urls.py criado no app {self.app}')
     
     def create_forms_archive(self):

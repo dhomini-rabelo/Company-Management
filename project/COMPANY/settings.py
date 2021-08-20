@@ -1,4 +1,5 @@
 from pathlib import Path
+from django.contrib.messages import constants
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -91,7 +92,15 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOGIN_URL = 'http://localhost:8000/login/'
 
+MESSAGE_TAGS = {
+    constants.ERROR : 'alert-danger',
+    constants.WARNING : 'alert-warning',
+    constants.DEBUG : 'alert-info',
+    constants.SUCCESS : 'alert-success',
+    constants.INFO : 'alert-info',
+}
 
 STATIC_URL = '/static/'
 

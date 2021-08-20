@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block 'title' %}Cadastro{% endblock %}
+
+{% block  'content' %}
+<main id="login">
+    <h2 class="mt-3 mb-3">Cadastro</h2>
+    <form method="POST" action="{% url 'cadastro' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group"  style="text-align: left;">
+            <label for="nome">Nome:</label>
+            <input type="text" class="form-control" name="nome" style="width: 700px;">
+        </div>
+        <div class="form-group"  style="text-align: left;">
+            <label for="usuario">Usuário:</label>
+            <input type="text" class="form-control" name="usuario" style="width: 700px;">
+        </div>
+        <div class="form-group"  style="text-align: left;">
+          <label for="email">Email:</label>
+          <input type="email" class="form-control" name="email" style="width: 700px;">
+        </div>
+        <div class="form-group"  style="text-align: left;">
+            <label for="senha">Senha:</label>
+            <input type="password" class="form-control" name="senha" style="width: 700px;">
+        </div>
+        <div class="form-group"  style="text-align: left;">
+            <label for="senha2">Confirmar senha:</label>
+            <input type="password" class="form-control" name="senha2" style="width: 700px;">
+        </div>
+        <div id="btn"  style="text-align: left;">
+            <button type="submit" class="btn btn-primary">SALVAR</button>
+        </div>
+      </form>
+</main>
+{% endblock %}

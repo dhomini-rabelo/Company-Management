@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block 'title' %}Login{% endblock %}
+{% block  'content' %}
+<form method="POST" action="{% url 'login' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <main class="login">
+        <h1>Faça login</h1>
+        <div class="form">
+            <label for="usuario">Usuário:</label><br>
+        </div>
+        <input type="text" name="usuario"><br>
+        <div class="form">
+            <label for="senha">Senha:</label><br>
+        </div>
+        <input type="password" name="senha"><br>
+        <button type="submit" class="btn btn-dark">Login</button>
+        <a href="{% url 'cadastro' %}"><button type="button" class="btn btn-dark">Cadastre-se</button></a>
+    </main>
+</form>
+{% endblock %}
