@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    {% include 'Parts/_head.html' %}
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'base.css' %}" />
+    <title>{% block 'title' %}{% endblock %}</title>
+  </head>
+<body>
+  {% include 'Parts/_header.html' %}
+  {% include 'Parts/_messages.html' %}
+
+  {% block  'content' %}
+  {% endblock %}
+  
+  {% include 'Parts/_footer.html' %}
+</body>

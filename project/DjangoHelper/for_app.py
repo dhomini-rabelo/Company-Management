@@ -2,7 +2,7 @@ from main import base_path as bp
 from models.app import DjangoApp
 
 
-app_name = 'test'
+app_name = 'empresa'
 
 app = DjangoApp(bp, app_name)
 
