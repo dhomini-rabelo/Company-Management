@@ -9,7 +9,7 @@ def login(request):
     user = auth.get_user(request)
     
     if user.is_authenticated:
-        return redirect('minha_conta_adm')
+        return redirect('minha_conta')
     elif request.method != 'POST':
         return render(request, 'login.html')
     
@@ -23,27 +23,28 @@ def login(request):
     else:
         auth.login(request, user)
         messages.add_message(request, messages.SUCCESS, 'Login realizado com sucesso')
-        return redirect('minha_conta_adm')
+        return redirect('minha_conta')
 
 
 def cadastro(request):
     user = auth.get_user(request)
     if user.is_authenticated:
-        return redirect('minha_conta_adm')
+        return redirect('minha_conta')
     elif request.method != 'POST':
-        return render(request, 'cadastro_adm.html')
+        return render(request, 'cadastro.html')
     
+    foto = request.POST.get('foto')
     nome = request.POST.get('nome')
     email = request.POST.get('email')
     usuario = request.POST.get('usuario')
     senha = request.POST.get('senha')
     senha2 = request.POST.get('senha2')
-    inputs = [nome, email, usuario, senha, senha2]
     
-    if not (validate_form(request, inputs, email) and validate_login(request, usuario, senha, senha2)):
-        return render(request, 'cadastro_adm.html')
     
-    new_user = User.objects.create_user(username=usuario, email=email, password=senha, first_name=nome, last_name='')
+    if not validate_cadastro_usuario(request, usuario, senha, senha2, nome, email):
+        return render(request, 'cadastro.html')
+    
+    new_user = User.objects.create_user(username=usuario, email=email, password=senha, first_name=nome, last_name='', foto=foto)
     new_user.save()
     messages.add_message(request, messages.SUCCESS, f'{usuario} foi registrado com sucesso')
     return redirect('login')

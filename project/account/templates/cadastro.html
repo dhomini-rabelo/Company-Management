@@ -8,6 +8,10 @@
     <form method="POST" action="{% url 'cadastro' %}" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group"  style="text-align: left;">
+            <label for="foto">Foto de perfil(opcional):</label><br>
+            <input type="file" name="foto" id="foto" accept="image/*">
+        </div>
+        <div class="form-group"  style="text-align: left;">
             <label for="nome">Nome:</label>
             <input type="text" class="form-control" name="nome" style="width: 700px;">
         </div>
