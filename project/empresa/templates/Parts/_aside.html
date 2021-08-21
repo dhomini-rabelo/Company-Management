@@ -1,0 +1,8 @@
+<aside style="background-color: black;">
+    <a href="">EMPRESA</a>
+    {% if user.empresario %}
+    <a href="">FINANÇAS</a>
+    {% endif %}
+    <a href="{% url 'editar_conta' %}">EDITAR CONTA</a>
+    <a href="{% url 'logout' %}">SAIR</a>
+</aside>

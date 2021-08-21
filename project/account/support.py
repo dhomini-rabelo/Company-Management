@@ -1,7 +1,7 @@
 from django.core.validators import validate_email
 from django.shortcuts import render
 from django.contrib import messages, auth
-from django.contrib.auth.models import User
+from account.models import User
 from string import ascii_letters, digits
 
 def exist_session(request, session_name: str):
@@ -13,11 +13,10 @@ def exist_session(request, session_name: str):
     
     
 def user_make_login(request):
-    try:
-        if request.auth.is_authenticated:
-            return True
-    except AttributeError:
-        return False
+    user = auth.get_user(request)
+    if user.is_authenticated:
+        return True
+    return False
 
 def checks_null(input_list: list):
     for we in input_list:
@@ -28,14 +27,14 @@ def checks_null(input_list: list):
 
 def validate_for_email(email: str):
     try:
-        is_valid = validate_email(email)
+        validate_email(email)
+        return True
     except:
         return False
-    return is_valid
 
         
 def validate_caracteres(text):
-    symbols = "#$*%<>/-+.,[](){}_"
+    symbols = "@.+-_"
     alloweds = symbols + digits + ascii_letters
     for letter in text:
        if letter not in alloweds:

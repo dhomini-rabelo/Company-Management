@@ -17,9 +17,9 @@ def login(request):
     senha = request.POST.get('senha')
     user = auth.authenticate(request, username=usuario, password=senha)
     
-    if user.is_authenticated:
+    if user is None:
         messages.add_message(request, messages.ERROR, 'Usuário ou senha inválidos')
-        return redirect(request, 'login.html')
+        return redirect('login')
     else:
         auth.login(request, user)
         messages.add_message(request, messages.SUCCESS, 'Login realizado com sucesso')
@@ -34,7 +34,7 @@ def cadastro(request):
         return render(request, 'cadastro.html')
     
     foto = request.POST.get('foto')
-    nome = request.POST.get('nome')
+    nome = request.POST.get('nome').title()
     email = request.POST.get('email')
     usuario = request.POST.get('usuario')
     senha = request.POST.get('senha')
@@ -42,7 +42,7 @@ def cadastro(request):
     
     
     if not validate_cadastro_usuario(request, usuario, senha, senha2, nome, email):
-        return render(request, 'cadastro.html')
+        return redirect('cadastro')
     
     new_user = User.objects.create_user(username=usuario, email=email, password=senha, first_name=nome, last_name='', foto=foto)
     new_user.save()

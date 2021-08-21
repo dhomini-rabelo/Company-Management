@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block 'title' %}MINHA CONTA{% endblock %}
+
+{% block  'content' %}
+<div id="division">
+    {% include 'Parts/_aside.html' %}
+    <main>
+        Funcionários do {{ user.first_name }}
+
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Telefone Comercial</th>
+                <th>Salário</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if funcionarios %}
+              {% for funcionario in funcionarios %}
+              <tr>
+                <td>
+                  {{ funcionario.nome }}
+                </td>
+                <td>{{ funcionario.telefone_comercial }}</td>
+                <td>R$ {{ funcionario.salario }}</td>
+              </tr>
+              {% endfor %}
+              {% endif %}
+            </tbody>
+          </table>
+    </main>
+</div>
+{% endblock %}
