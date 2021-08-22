@@ -1,4 +1,5 @@
 from django.db.models import (Model, CharField, DateTimeField, TextField, EmailField, ForeignKey, PositiveIntegerField, ImageField, DO_NOTHING, DecimalField, DateField, BooleanField, CASCADE)
+from django.db.models.fields import SlugField
 from django.db.models.fields.related import ManyToManyField
 from django.utils.safestring import mark_safe
 from django.utils import timezone
@@ -27,24 +28,19 @@ class Funcionario(Model):
     def icone(self):
         return f'<a href="/media/{self.foto}" target="_blank"><img src="/media/{self.foto}" style="width: 35px; height: 25px;"></a>'
 
-    
-class Despesa(Model):
-    nome = CharField(max_length=120)
-    descricao = TextField('Descrição', blank=True) 
-    valor = DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'), blank=True)
-
 
 class Empresa(Model):
     nome = CharField(max_length=120)
-    logo = ImageField(upload_to='images/company/%Y/%m/%d/%M/%f', default='images/logo.jpg', blank=True)
-    foto = ImageField(upload_to='images/company/%Y/%m/%d/%M/%f', default='images/empresa.jpg', blank=True)
+    logo = ImageField(upload_to='images/company/%Y/%m/%d/%M/%f', default='images/logo.jpg')
+    foto = ImageField(upload_to='images/company/%Y/%m/%d/%M/%f', default='images/empresa.jpg')
     descricao = TextField('Descrição', blank=True) 
     presidente = ForeignKey(User, on_delete=DO_NOTHING)
     funcionarios = ManyToManyField(Funcionario, verbose_name='Funcionários', blank=True)
-    despesas = ManyToManyField(Despesa, blank=True) 
+    despesas = DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'), blank=True)
     data_de_criacao = DateField('Data de criação', blank=True)
     fundador = CharField(max_length=120, blank=True)
     valor = DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'), blank=True)
+    link = SlugField(max_length=120, default='/', blank=True)
     
     def __str__(self):
         return self.nome
@@ -52,11 +48,17 @@ class Empresa(Model):
     @mark_safe
     def logo(self):
         return f'<a href="/media/{self.logo}" target="_blank"><img src="/media/{self.logo}" style="width: 35px; height: 25px;"></a>'
-    
+        
     @mark_safe
     def foto(self):
         return f'<a href="/media/{self.foto}" target="_blank"><img src="/media/{self.foto}" style="width: 35px; height: 25px;"></a>'
+ 
     
+class Despesa(Model):
+    nome = CharField(max_length=120)
+    descricao = TextField('Descrição', blank=True) 
+    valor = DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'), blank=True)
+    empresa = ForeignKey(Empresa, on_delete=DO_NOTHING, blank=True, null=True)
     
 # class Setor(Model):
 #     nome = CharField(max_length=120)
@@ -72,7 +74,7 @@ class Empresa(Model):
 #     descricao = TextField('Descrição', blank=True) 
 #     finalizado = BooleanField(default=False)
 #     fases = PositiveIntegerField(blank=True)
-#     gastos = DecimalField(max_digits=12, decimal_places=2)
+#     gastos = DecimalField(max_digits=12, decimal_places=2) - prazo
     
     
 # class Etapa(Model):
@@ -90,7 +92,7 @@ class Empresa(Model):
 #     lucros = DecimalField(max_digits=12, decimal_places=2)
 #     empresa = ForeignKey(Empresa, on_delete=CASCADE)
 #     etapas = ManyToManyField(Etapa)
-#     funcionarios = ManyToManyField(Funcionario, verbose_name='Funcionários')
+#     funcionarios = ManyToManyField(Funcionario, verbose_name='Funcionários') - prazo
 #foto001 opcional
 #foto001
 #foto001

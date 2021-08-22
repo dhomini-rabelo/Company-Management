@@ -2,17 +2,17 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.divMyCompany{
+.divMyCompanyf{
     text-align: center;
 }
 
-.myCompany{
+.myCompanyf{
     display: inline-block;
     border: 5px solid black;
     border-radius: 20px;
 }
 
-.titleMyCompany{
+.titleMyCompanyf{
     background-color: black;
     color: white;
     padding: 3px;
@@ -20,7 +20,7 @@
     text-align: left;
 }
 
-.bodyMyCompany{
+.bodyMyCompanyf{
     display: flex;
     flex-wrap: wrap;
     text-align: left;
