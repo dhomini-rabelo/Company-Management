@@ -1,0 +1,32 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.company{
+    max-width: 40%;
+    border: 5px solid black;
+    margin: auto;
+    border-radius: 20px;
+
+}
+
+.titleCompany{
+    background-color: black;
+    color: white;
+    padding: 3px;
+    text-indent: 10px;
+}
+
+.bodyCompany{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.funcionario{
+    padding: 15px;
+    border-right: 3px solid black;
+}
+
+.funcionarioTasks{
+    padding: 15px;
+}
