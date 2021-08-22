@@ -2,24 +2,28 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.company{
-    max-width: 40%;
-    border: 5px solid black;
-    margin: auto;
-    border-radius: 20px;
-
+.divMyCompany{
+    text-align: center;
 }
 
-.titleCompany{
+.myCompany{
+    display: inline-block;
+    border: 5px solid black;
+    border-radius: 20px;
+}
+
+.titleMyCompany{
     background-color: black;
     color: white;
     padding: 3px;
     text-indent: 10px;
+    text-align: left;
 }
 
-.bodyCompany{
+.bodyMyCompany{
     display: flex;
     flex-wrap: wrap;
+    text-align: left;
 }
 
 .funcionario{
