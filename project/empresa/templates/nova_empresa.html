@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block 'title' %}EMPRESA{% endblock %}
+
+{% block  'content' %}
+<div id="division">
+    {% include 'Parts/_aside.html' %}
+    <main>
+        <img src="/media/images/escolhas.jpg" alt="escolha" style="height: 600px;">
+        <div class="escolhas">
+            <a href="#" class="escolha">CRIAR EMPRESA</a>
+            <a href="#" class="escolha">GERENCIAR EMPRESA</a>
+            <a href="#" class="escolha">ENTRAR EM PROJETO</a>
+        </div>
+    </main>
+</div>
+{% endblock %}

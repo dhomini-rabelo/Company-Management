@@ -11,7 +11,7 @@ class FuncionarioAdmin(admin.ModelAdmin):
 
 @admin.register(Empresa)
 class EmpresaAdmin(admin.ModelAdmin):
-    list_display = 'logo', 'nome', 'presidente', 'valor'
+    list_display = 'icone_logo', 'nome', 'presidente', 'valor'
     list_display_links = 'nome',
     
     

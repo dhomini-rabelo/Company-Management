@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages, auth
 from django.shortcuts import render, redirect
 from account.support import *
-from .models import Funcionario
+from .models import *
 
 
 def home(request):
@@ -12,7 +12,16 @@ def home(request):
 @login_required
 def minha_conta(request):
     user = auth.get_user(request)
-    context = {'funcionarios': Funcionario.objects.filter(admin=user)}
+    context = dict()
+    
+    if user.empresario:
+        empresas_presidente = Empresa.objects.filter(presidente=user)
+        context['empresas_presidente'] = empresas_presidente
+    if is_funcionario(user):
+        funcionario = Funcionario.objects.filter(codigo=user.id)
+        empresas_funcionario = Empresa.objects.filter(Funcionario=funcionario)
+        context['empresas_funcionario'] = empresas_funcionario    
+    
     return render(request, 'minha_conta.html', context)
 
 
@@ -52,6 +61,10 @@ def editar_conta(request):
     user.save()    
     return redirect('editar_conta')
 
+
+@login_required
+def nova_empresa(request):
+    return render(request, 'nova_empresa.html')
 
 """
 {% extends 'base.html' %}

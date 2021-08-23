@@ -84,3 +84,54 @@ main{
 h2{
   text-align: center;
 }
+
+.divMyCompanyf{
+  text-align: center;
+}
+
+.myCompanyf{
+  min-width: 1000px;
+  display: inline-block;
+  border: 5px solid black;
+  border-radius: 20px;
+}
+
+.titleMyCompanyf{
+  background-color: black;
+  color: white;
+  padding: 3px;
+  text-indent: 10px;
+  text-align: left;
+}
+
+.bodyMyCompanyf{
+  display: flex;
+  flex-wrap: wrap;
+  text-align: left;
+}
+
+.funcionario{
+  padding: 15px;
+  border-right: 3px solid black;
+}
+
+.funcionarioTasks{
+  padding: 15px;
+}
+
+main .escolha{
+  background-color: #000;
+  color: white;
+  font-size: 14px;
+  display: inline-block;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 10px;
+  width: 300px;
+  margin: 20px;
+  border-radius: 30%;
+}
+
+main  div.escolhas{
+  text-align: center;
+}

@@ -20,6 +20,8 @@ class Funcionario(Model):
     demitido = BooleanField(default=False)
     ultima_mudanca = DateField('Última mudança', auto_now=True)
     profissao = CharField(max_length=120, default='desempregado')
+    bio = TextField(default='')
+    codigo = PositiveIntegerField(unique=True, blank=True, default=0)
 
     def __str__(self):
         return self.nome
@@ -46,11 +48,11 @@ class Empresa(Model):
         return self.nome
     
     @mark_safe
-    def logo(self):
+    def icone_logo(self):
         return f'<a href="/media/{self.logo}" target="_blank"><img src="/media/{self.logo}" style="width: 35px; height: 25px;"></a>'
         
     @mark_safe
-    def foto(self):
+    def icone_foto(self):
         return f'<a href="/media/{self.foto}" target="_blank"><img src="/media/{self.foto}" style="width: 35px; height: 25px;"></a>'
  
     
