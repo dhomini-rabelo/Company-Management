@@ -42,7 +42,7 @@ class Empresa(Model):
     data_de_criacao = DateField('Data de criação', blank=True)
     fundador = CharField(max_length=120, blank=True)
     valor = DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'), blank=True)
-    link = SlugField(max_length=120, default='/', blank=True)
+    link = SlugField(max_length=120, default='/', blank=True, unique=True)
     
     def __str__(self):
         return self.nome

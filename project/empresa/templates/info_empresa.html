@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load filtros %}
+{% load static %}
+
+{% block 'title' %}{{ empresa.nome }}{% endblock %}
+
+{% block  'content' %}
+<div id="division">
+    {% include 'Parts/_aside.html' %}
+    <main>
+        <div class="divMyCompanyE">
+            <section class="myCompanyE">
+                <div class="titleMyCompanyE">
+                    <img src="/media/{{ empresa.logo }}" alt="logo" style="width: 60px; height: 35px;">
+                    {{ empresa.nome }} - {{ empresa.data_de_criacao|ano }}
+                </div>
+                <div class="bodyMyCompanyE">
+                    <div class="empresa">
+                        <img src="/media/{{ empresa.foto }}" alt="perfil" style="width: 500px; height: 400px;"><br>
+                        Descrição:<br>
+                        <p>{{ empresa.descricao }}</p><br>
+                    </div>
+                    <div class="empresaTasks">
+                        <p>
+                            Informações da empresa<br>
+                            Nome da empresa: {{ empresa.nome }}<br>
+                            Presidente: {{ empresa.presidente.first_name }}<br>
+                            Fundador: {{ empresa.fundador }}<br>
+                            Data de fundação: {{ empresa.data_de_criacao }}<br>
+                            Valor de Mercado: R$ {{ empresa.valor|grana }}<br>
+                            <a href="" class="escolha" style="width: 185px;">Lista de funcionários</a>
+                        </p>
+                    </div>
+                </div>
+            </section>
+    </main>
+</div>
+
+{% endblock %}

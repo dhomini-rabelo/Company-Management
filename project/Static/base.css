@@ -57,14 +57,14 @@ input{
     padding: 10px;
   }
 
-  .title a{
+.title a{
     padding-left: 0;
   }
-  #division{
+#division{
     display: flex;
     height: 1000px;
 }
-  aside a{
+aside a{
     color: white;
     text-decoration: none;
     font-style: bold;
@@ -102,7 +102,17 @@ h2{
   padding: 3px;
   text-indent: 10px;
   text-align: left;
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: bold;
 }
+.titleMyCompanyf a{
+  color: white;
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
 
 .bodyMyCompanyf{
   display: flex;
@@ -132,6 +142,43 @@ main .escolha{
   border-radius: 30%;
 }
 
-main  div.escolhas{
+div.escolhas{
   text-align: center;
+}
+
+.divMyCompanyE{
+  text-align: center;
+}
+
+.myCompanyfE{
+  min-width: 1000px;
+  display: inline-block;
+  border: 5px solid black;
+  border-radius: 20px;
+}
+
+.titleMyCompanyE{
+  background-color: blueviolet;
+  color: white;
+  padding: 3px;
+  text-indent: 10px;
+  text-align: left;
+  font-size: 30px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.bodyMyCompanyE{
+  display: flex;
+  flex-wrap: wrap;
+  text-align: left;
+}
+
+.empresa{
+  padding: 15px;
+  border-right: 3px solid black;
+}
+
+.empresaTasks{
+  padding: 15px;
 }

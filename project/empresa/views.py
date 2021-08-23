@@ -66,11 +66,44 @@ def editar_conta(request):
 def nova_empresa(request):
     return render(request, 'nova_empresa.html')
 
+
+@login_required
+def info_empresa(request, link):
+    context = dict()
+    empresa = Empresa.objects.filter(link=link)
+    context['empresa'] = empresa.first
+    return render(request, 'info_empresa.html', context)
+
+
+@login_required
+def lista_funcionarios(request, link):
+    context = dict()
+    empresa = Empresa.objects.get(link=link)        
+    context['empresa'] = empresa
+    context['funcionarios'] = empresa.funcionarios.model.MultipleObjectsReturned().all()
+    print(empresa.funcionarios.model.__dict__)
+    return render(request, 'lista_funcionarios.html', context)
+    
+
 """
 {% extends 'base.html' %}
 
 {% block 'title' %}{% endblock %}
 
 {% block  'content' %}
+{% endblock %}
+
+-----------------------
+
+{% extends 'base.html' %}
+
+{% block 'title' %}{% endblock %}
+
+{% block  'content' %}
+<div id="division">
+    {% include 'Parts/_aside.html' %}
+    <main>
+    </main>
+</div>
 {% endblock %}
 """

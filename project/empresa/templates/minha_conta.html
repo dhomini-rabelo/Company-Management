@@ -13,7 +13,7 @@
         <section class="myCompanyf">
             <div class="titleMyCompanyf">
                 <img src="/media/{{ empresa.logo }}" alt="logo" style="width: 27px; height: 17px;">
-                {{ empresa.nome }} - {{ empresa.data_de_criacao|ano }}
+                <a href="{% url 'info_empresa' empresa.link %}">{{ empresa.nome }} - {{ empresa.data_de_criacao|ano }}</a>
             </div>
             <div class="bodyMyCompanyf">
                 <div class="funcionario">
