@@ -20,7 +20,7 @@ class Funcionario(Model):
     demitido = BooleanField(default=False)
     ultima_mudanca = DateField('Última mudança', auto_now=True)
     profissao = CharField(max_length=120, default='desempregado')
-    bio = TextField(default='')
+    bio = TextField(default='', blank=True)
     codigo = PositiveIntegerField(unique=True, blank=True, default=0)
 
     def __str__(self):

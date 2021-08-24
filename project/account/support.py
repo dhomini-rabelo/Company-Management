@@ -9,7 +9,7 @@ def is_funcionario(user):
     res = Funcionario.objects.filter(codigo=user.id) # response
     if len(res) > 0:
         return True
-    return 
+    return False
         
 
 def exist_session(request, session_name: str):

@@ -1,0 +1,29 @@
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+      {% if funcionarios.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?p={{ funcionarios.previous_page_number }}&termo={{ request.GET.termo }}" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+          <span class="sr-only">Previous</span>
+        </a>
+      </li>
+      {% endif %}
+      {% for pagina in funcionarios.paginator.page_range %}
+      {% if funcionarios.number == pagina %}
+        <li class="page-item active">
+      {% else %}
+        <li class="page-item">
+      {% endif %}
+        <a class="page-link" href="?p={{ pagina }}&termo={{ request.GET.termo }}">{{ pagina }}</a>
+        </li>
+      {% endfor %}
+      {% if funcionarios.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?p={{ funcionarios.next_page_number }}&termo={{ request.GET.termo }}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+          <span class="sr-only">Next</span>
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>

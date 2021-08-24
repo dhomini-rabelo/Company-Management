@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages, auth
 from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
 from account.support import *
 from .models import *
 
@@ -80,8 +81,20 @@ def lista_funcionarios(request, link):
     context = dict()
     empresa = Empresa.objects.get(link=link)        
     context['empresa'] = empresa
-    funcionarios = [funcionario for funcionario in empresa.funcionarios.filter(demitido=False)]
+    
+    nome = request.GET.get('nome')
+    if nome is not None and nome.strip() != '':
+        funcionarios = [funcionario for funcionario in empresa.funcionarios.filter(nome__icontains=nome, demitido=False)]
+    else:
+        funcionarios = [funcionario for funcionario in empresa.funcionarios.filter(demitido=False)]
+    
+    paginator = Paginator(funcionarios, 1)
+    page_number = request.GET.get('p')
+    funcionarios = paginator.get_page(page_number)
+    
+    
     context['funcionarios'] = funcionarios
+    
     return render(request, 'lista_funcionarios.html', context)
     
     
@@ -91,6 +104,8 @@ def funcionario(request, link, id):
     context['funcionario'] = Funcionario.objects.get(id=id)
     context['empresa'] = Empresa.objects.get(link=link) 
     return render(request, 'funcionario.html', context)
+
+        
 """
 {% extends 'base.html' %}
 

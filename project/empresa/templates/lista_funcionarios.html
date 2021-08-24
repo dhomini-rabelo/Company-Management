@@ -13,6 +13,7 @@
                 <a href="{% url 'info_empresa' empresa.link %}" class="titleMyCompanyE">{{ empresa.nome }}</a> - Lista Funcionários
             </div>
         </section>
+        {% include 'Parts/_search.html' %}
         <table class="table">
             <thead>
               <tr>
@@ -35,6 +36,7 @@
               {% endif %}
             </tbody>
           </table>
+          {% include 'Parts/_paginator.html' %}
     </main>
 </div>
 {% endblock %}
