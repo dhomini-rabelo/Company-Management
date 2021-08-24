@@ -1,7 +1,22 @@
-<form method="get">
-    <div class="form-group row">
-        <div div class="col-12">
-          <input class="form-control" type="search" value="{{ request.GET.nome }}"  id="search-input" placeholder="Buscar funcionário" name="nome">
+<div class="" style="margin-top: 12px;">
+  <form method="get">
+      <div class="form-group row">
+          <div div class="col-12">
+            <input class="form-control" type="search" value="{{ request.GET.nome }}"  id="search-input" placeholder="Buscar por nome" name="nome" style="width: 200%;">
+          </div>
         </div>
+      <div class="form-group row">
+          <div div class="col-12">
+            <input class="form-control" type="search" value="{{ request.GET.salario }}"  id="search-input" placeholder="Buscar por salário, use apenas números" name="salario" style="width: 200%;">
+          </div>
+        </div>
+      <div class="form-group row">
+          <div div class="col-12">
+            <input class="form-control" type="search" value="{{ request.GET.profissao }}"  id="search-input" placeholder="Buscar por profissão" name="profissao" style="width: 200%;">
+          </div>
+        </div>
+        <div id="btn"  style="width: 200%; text-align: right;">
+          <button type="submit" class="btn btn-primary">BUSCAR</button>
       </div>
   </form>
+</div>

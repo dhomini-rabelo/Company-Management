@@ -6,20 +6,20 @@
 {% block  'content' %}
 <div id="division">
     {% include 'Parts/_aside.html' %}
-    <main>
+    <main style="margin: 20px;";>
         <section class="myCompanyE">
             <div class="titleMyCompanyE">
                 <img src="/media/{{ empresa.logo }}" alt="logo" style="width: 60px; height: 35px;">
                 <a href="{% url 'info_empresa' empresa.link %}" class="titleMyCompanyE">{{ empresa.nome }}</a> - Lista Funcionários
             </div>
         </section>
-        {% include 'Parts/_search.html' %}
         <table class="table">
             <thead>
               <tr>
                 <th>Nome</th>
                 <th>Telefone Comercial</th>
                 <th>Salário</th>
+                <th>Profissão</th>
               </tr>
             </thead>
             <tbody>
@@ -31,6 +31,7 @@
                 </td>
                 <td>{{ funcionario.telefone_comercial }}</td>
                 <td>R$ {{ funcionario.salario|grana }}</td>
+                <td>{{ funcionario.profissao }}</td>
               </tr>
               {% endfor %}
               {% endif %}
@@ -38,5 +39,6 @@
           </table>
           {% include 'Parts/_paginator.html' %}
     </main>
+    {% include 'Parts/_search.html' %}
 </div>
 {% endblock %}

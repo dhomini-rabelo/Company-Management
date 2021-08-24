@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages, auth
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
+from decimal import Decimal
 from account.support import *
 from .models import *
 
@@ -81,20 +82,25 @@ def lista_funcionarios(request, link):
     context = dict()
     empresa = Empresa.objects.get(link=link)        
     context['empresa'] = empresa
+    funcionarios_model = empresa.funcionarios.filter(demitido=False)
     
     nome = request.GET.get('nome')
+    salario = request.GET.get('salario')
+    profissao = request.GET.get('profissao')
     if nome is not None and nome.strip() != '':
-        funcionarios = [funcionario for funcionario in empresa.funcionarios.filter(nome__icontains=nome, demitido=False)]
-    else:
-        funcionarios = [funcionario for funcionario in empresa.funcionarios.filter(demitido=False)]
+        funcionarios_model = funcionarios_model.filter(nome__icontains=nome)
+    if salario is not None and salario.strip() != '':
+        funcionarios_model = funcionarios_model.filter(salario__lt=Decimal(salario))
+    if profissao is not None and profissao.strip() != '':
+        funcionarios_model = funcionarios_model.filter(profissao__icontains=profissao)
+        
+    funcionarios = [funcionario for funcionario in funcionarios_model]
     
     paginator = Paginator(funcionarios, 1)
     page_number = request.GET.get('p')
     funcionarios = paginator.get_page(page_number)
     
-    
     context['funcionarios'] = funcionarios
-    
     return render(request, 'lista_funcionarios.html', context)
     
     
