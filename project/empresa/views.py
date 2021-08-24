@@ -80,11 +80,17 @@ def lista_funcionarios(request, link):
     context = dict()
     empresa = Empresa.objects.get(link=link)        
     context['empresa'] = empresa
-    context['funcionarios'] = empresa.funcionarios.model.MultipleObjectsReturned().all()
-    print(empresa.funcionarios.model.__dict__)
+    funcionarios = [funcionario for funcionario in empresa.funcionarios.filter(demitido=False)]
+    context['funcionarios'] = funcionarios
     return render(request, 'lista_funcionarios.html', context)
     
-
+    
+@login_required
+def funcionario(request, link, id):
+    context = dict()
+    context['funcionario'] = Funcionario.objects.get(id=id)
+    context['empresa'] = Empresa.objects.get(link=link) 
+    return render(request, 'funcionario.html', context)
 """
 {% extends 'base.html' %}
 

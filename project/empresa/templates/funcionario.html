@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load filtros %}
+
+{% block 'title' %}MINHA CONTA{% endblock %}
+
+{% block  'content' %}
+<div id="division">
+    {% include 'Parts/_aside.html' %}
+    <main>
+      <div class="divMyCompanyf">
+        <section class="myCompanyf">
+            <div class="titleMyCompanyf">
+                <img src="/media/{{ empresa.logo }}" alt="logo" style="width: 27px; height: 17px;">
+                <a href="{% url 'info_empresa' empresa.link %}">{{ empresa.nome }} - {{ empresa.data_de_criacao|ano }}</a>
+            </div>
+            <div class="bodyMyCompanyf">
+                <div class="funcionario">
+                    <img src="/media/{{ funcionario.foto }}" alt="perfil" style="width: 250px; height: 225px;">
+                    <p>
+                      <br>Nome: {{ funcionario.nome }}
+                      <br>Profissão: {{ funcionario.profissao }}
+                      <br>Salário: {{ funcionario.salario }}
+                      <br>Bio: {{ funcionario.bio }}
+                    </p>
+                </div>
+                <div class="funcionarioTasks">
+                    <p>Informações do funcionário
+                        <br>Idade: {{ funcionario.idade }}
+                        <br>Telefone pessoal: {{ funcionario.telefone_pessoal }}
+                        <br>Telefone comercial: {{ funcionario.telefone_comercial }}
+                        <br>CPF: {{ funcionario.cpf }}
+                        <br>Data de registro: {{ funcionario.data_registro }}
+                        <br>Última atualização: {{ funcionario.ultima_mudanca }}
+                    </p>
+                </div>
+            </div>
+        </section>
+      </div>
+    </main>
+</div>
+{% endblock %}

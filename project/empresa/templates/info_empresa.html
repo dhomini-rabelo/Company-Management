@@ -28,7 +28,7 @@
                             Fundador: {{ empresa.fundador }}<br>
                             Data de fundação: {{ empresa.data_de_criacao }}<br>
                             Valor de Mercado: R$ {{ empresa.valor|grana }}<br>
-                            <a href="" class="escolha" style="width: 185px;">Lista de funcionários</a>
+                            <a href="{{ request.path|full }}/funcionarios" class="escolha" style="width: 185px;">Lista de funcionários</a>
                         </p>
                     </div>
                 </div>

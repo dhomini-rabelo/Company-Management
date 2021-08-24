@@ -20,3 +20,7 @@ def _grana(valor):
         else:
             new.append(value[c])
     return ''.join(new)[::-1] + f',{str(valor)[-2:]}'
+
+@register.filter(name='full')
+def _full(full_path):
+    return full_path[:-1]

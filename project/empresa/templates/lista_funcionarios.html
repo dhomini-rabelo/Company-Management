@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load filtros %}
 
 {% block 'title' %}FUNCIONÁRIOS{% endblock %}
 
@@ -9,7 +10,7 @@
         <section class="myCompanyE">
             <div class="titleMyCompanyE">
                 <img src="/media/{{ empresa.logo }}" alt="logo" style="width: 60px; height: 35px;">
-                {{ empresa.nome }} - Lista Funcionários
+                <a href="{% url 'info_empresa' empresa.link %}" class="titleMyCompanyE">{{ empresa.nome }}</a> - Lista Funcionários
             </div>
         </section>
         <table class="table">
@@ -25,10 +26,10 @@
               {% for funcionario in funcionarios %}
               <tr>
                 <td>
-                  {{ funcionario.nome }}
+                  <a href="{{ request.path }}/{{ funcionario.id }}" style="color: black; text-decoration: none;">{{ funcionario.nome }}</a>
                 </td>
                 <td>{{ funcionario.telefone_comercial }}</td>
-                <td>R$ {{ funcionario.salario }}</td>
+                <td>R$ {{ funcionario.salario|grana }}</td>
               </tr>
               {% endfor %}
               {% endif %}
