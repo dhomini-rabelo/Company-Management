@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 from decimal import Decimal
 from account.support import *
 from .models import *
-
+from .forms import EmpresaForm
 
 def home(request):
     return render(request, 'home.html')
@@ -22,7 +22,9 @@ def minha_conta(request):
     if is_funcionario(user):
         funcionario = Funcionario.objects.filter(codigo=user.id)
         empresas_funcionario = Empresa.objects.filter(Funcionario=funcionario)
-        context['empresas_funcionario'] = empresas_funcionario    
+        context['empresas_funcionario'] = empresas_funcionario 
+    if context.get('empresas_presidente') is None and context.get('empresas_funcionario') is None:
+        redirect('nova-empresa')
     
     return render(request, 'minha_conta.html', context)
 
@@ -68,6 +70,12 @@ def editar_conta(request):
 def nova_empresa(request):
     return render(request, 'nova_empresa.html')
 
+@login_required
+def cadastro_empresa(request):
+    context = dict()
+    context['form'] = EmpresaForm
+    return render(request, 'cadastro_empresa.html', context)
+
 
 @login_required
 def info_empresa(request, link):
@@ -82,19 +90,18 @@ def lista_funcionarios(request, link):
     context = dict()
     empresa = Empresa.objects.get(link=link)        
     context['empresa'] = empresa
-    funcionarios_model = empresa.funcionarios.filter(demitido=False)
+    funcionarios = empresa.funcionarios.filter(demitido=False).order_by('nome')
     
     nome = request.GET.get('nome')
     salario = request.GET.get('salario')
     profissao = request.GET.get('profissao')
+
     if nome is not None and nome.strip() != '':
-        funcionarios_model = funcionarios_model.filter(nome__icontains=nome)
-    if salario is not None and salario.strip() != '':
-        funcionarios_model = funcionarios_model.filter(salario__gte=Decimal(salario))
+        funcionarios = funcionarios.filter(nome__icontains=nome)
     if profissao is not None and profissao.strip() != '':
-        funcionarios_model = funcionarios_model.filter(profissao__icontains=profissao)
-        
-    funcionarios = [funcionario for funcionario in funcionarios_model]
+        funcionarios = funcionarios.filter(profissao__icontains=profissao)
+    if salario is not None and salario.strip() != '':
+        funcionarios = funcionarios.filter(salario__gte=Decimal(salario)).order_by('salario')
     
     paginator = Paginator(funcionarios, 15)
     page_number = request.GET.get('p')

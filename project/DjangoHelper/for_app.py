@@ -7,8 +7,6 @@ app_name = 'empresa'
 app = DjangoApp(bp, app_name)
 
 
-app.create_template('index', 'base')
-
 #* Criar form
-# model = 'Model'
-# app.create_form(model)
+model = 'EmpresaForm'
+app.create_form(model)

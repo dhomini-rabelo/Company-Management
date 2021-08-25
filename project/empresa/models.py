@@ -35,7 +35,8 @@ class Funcionario(Model):
     def icone(self):
         return f'<a href="/media/{self.foto}" target="_blank"><img src="/media/{self.foto}" style="width: 35px; height: 25px;"></a>'
 
-
+    
+    
 class Empresa(Model):
     nome = CharField(max_length=120)
     logo = ImageField(upload_to='images/company/%Y/%m/%d/%M/%f', default='images/logo.jpg')
@@ -60,6 +61,8 @@ class Empresa(Model):
     def icone_foto(self):
         return f'<a href="/media/{self.foto}" target="_blank"><img src="/media/{self.foto}" style="width: 35px; height: 25px;"></a>'
  
+    def n_funcionarios(self):
+        return len(self.funcionarios.filter(demitido=False))
     
 class Despesa(Model):
     nome = CharField(max_length=120)

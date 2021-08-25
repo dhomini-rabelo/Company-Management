@@ -5,7 +5,7 @@ from django.utils import timezone
 
 class User(AbstractUser):
     idade = PositiveIntegerField(blank=True, null=True)
-    foto = ImageField('Foto de perfil', upload_to='images/%Y/%m/%d/%M/%f', blank=True, default='images/default.jpg', null=True)
+    foto = ImageField('Foto de perfil', upload_to='images/%Y/%m/%d/%M/%f', null=True, blank=True, default='images/default.jpg')
     telefone_pessoal = CharField('Telefone pessoal', max_length=20, blank=True, null=True)
     telefone_comercial = CharField('Telefone de trabalho', max_length=25, blank=True, null=True)
     cpf = CharField('CPF', max_length=25, blank=True, null=True)

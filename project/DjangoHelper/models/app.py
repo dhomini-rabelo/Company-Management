@@ -68,7 +68,7 @@ class DjangoApp(DjangoBase):
         with io.open(path, 'a', encoding='utf-8') as arc:
             arc.write(f'\n\nclass Form{model_name}(ModelForm):\n')
             arc.write(f"    class Meta:\n      fields='__all__'\n")
-            arc.write(f"        model = {model_name}\n")
+            arc.write(f"      model = {model_name}\n")
             response(f'criando form para {model_name}')
             
     def import_for_model(self):

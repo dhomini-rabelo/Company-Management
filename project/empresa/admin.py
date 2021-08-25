@@ -8,12 +8,13 @@ class FuncionarioAdmin(admin.ModelAdmin):
     list_display_links = 'nome',
     list_filter = 'demitido',
     readonly_fields = 'codigo',
+    search_fields = 'nome',
     list_per_page = 20
 
 
 @admin.register(Empresa)
 class EmpresaAdmin(admin.ModelAdmin):
-    list_display = 'icone_logo', 'nome', 'presidente', 'valor', 'id'
+    list_display = 'icone_logo', 'nome', 'presidente', 'valor', 'n_funcionarios'
     list_display_links = 'nome',
     
     

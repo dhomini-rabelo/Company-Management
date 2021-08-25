@@ -2,7 +2,7 @@ from models.eraser import delete_comments_by_folder
 from main import base_path as bp
 from models.app import DjangoApp
 
-app_name = 'account'
+app_name = 'empresa'
 
 app = DjangoApp(bp, app_name)
 
