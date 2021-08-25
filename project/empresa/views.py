@@ -96,7 +96,7 @@ def lista_funcionarios(request, link):
         
     funcionarios = [funcionario for funcionario in funcionarios_model]
     
-    paginator = Paginator(funcionarios, 1)
+    paginator = Paginator(funcionarios, 15)
     page_number = request.GET.get('p')
     funcionarios = paginator.get_page(page_number)
     

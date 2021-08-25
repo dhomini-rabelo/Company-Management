@@ -8,6 +8,7 @@ class FuncionarioAdmin(admin.ModelAdmin):
     list_display_links = 'nome',
     list_filter = 'demitido',
     readonly_fields = 'codigo',
+    list_per_page = 20
 
 
 @admin.register(Empresa)

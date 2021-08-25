@@ -24,7 +24,7 @@ class Funcionario(Model):
     data_registro = DateField('Data de registro', auto_now_add=True)
     demitido = BooleanField(default=False)
     ultima_mudanca = DateField('Última mudança', auto_now=True)
-    profissao = CharField(max_length=120, default='desempregado')
+    profissao = CharField(max_length=120, default='')
     bio = TextField(default='', blank=True)
     codigo = PositiveBigIntegerField(unique=True, blank=True, default=get_codigo)
     
