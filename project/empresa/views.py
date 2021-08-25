@@ -90,7 +90,7 @@ def lista_funcionarios(request, link):
     if nome is not None and nome.strip() != '':
         funcionarios_model = funcionarios_model.filter(nome__icontains=nome)
     if salario is not None and salario.strip() != '':
-        funcionarios_model = funcionarios_model.filter(salario__lt=Decimal(salario))
+        funcionarios_model = funcionarios_model.filter(salario__gte=Decimal(salario))
     if profissao is not None and profissao.strip() != '':
         funcionarios_model = funcionarios_model.filter(profissao__icontains=profissao)
         

@@ -1,4 +1,4 @@
-from django.db.models import (Model, CharField, DateTimeField, TextField, EmailField, ForeignKey, PositiveIntegerField, ImageField, DO_NOTHING, DecimalField, DateField, BooleanField, CASCADE)
+from django.db.models import (Model, CharField, DateTimeField, TextField, EmailField, ForeignKey, PositiveIntegerField, ImageField, DO_NOTHING, DecimalField, DateField, BooleanField, CASCADE, PositiveBigIntegerField)
 from django.db.models.fields import SlugField
 from django.db.models.fields.related import ManyToManyField
 from django.utils.safestring import mark_safe
@@ -7,7 +7,12 @@ from account.models import User
 from django.db import models
 from decimal import Decimal
 
+def get_codigo():
+    last_number = 9000000000000000000
+    number = last_number - len(Funcionario.objects.all())
+    return number
 
+    
 class Funcionario(Model):
     nome = CharField(max_length=120)
     idade = PositiveIntegerField()
@@ -21,8 +26,8 @@ class Funcionario(Model):
     ultima_mudanca = DateField('Última mudança', auto_now=True)
     profissao = CharField(max_length=120, default='desempregado')
     bio = TextField(default='', blank=True)
-    codigo = PositiveIntegerField(unique=True, blank=True, default=0)
-
+    codigo = PositiveBigIntegerField(unique=True, blank=True, default=get_codigo)
+    
     def __str__(self):
         return self.nome
     

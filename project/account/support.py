@@ -5,6 +5,7 @@ from account.models import User
 from empresa.models import *
 from string import ascii_letters, digits
 
+
 def is_funcionario(user):
     res = Funcionario.objects.filter(codigo=user.id) # response
     if len(res) > 0:
