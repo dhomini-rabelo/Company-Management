@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages, auth
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
+from django.core.validators import validate_slug, validate_unicode_slug 
 from decimal import Decimal
 from account.support import *
 from .models import *
@@ -23,8 +24,9 @@ def minha_conta(request):
         funcionario = Funcionario.objects.filter(codigo=user.id)
         empresas_funcionario = Empresa.objects.filter(Funcionario=funcionario)
         context['empresas_funcionario'] = empresas_funcionario 
+        
     if context.get('empresas_presidente') is None and context.get('empresas_funcionario') is None:
-        redirect('nova-empresa')
+        return redirect('nova_empresa')
     
     return render(request, 'minha_conta.html', context)
 
@@ -72,9 +74,31 @@ def nova_empresa(request):
 
 @login_required
 def cadastro_empresa(request):
+    user = auth.get_user(request)
     context = dict()
     context['form'] = EmpresaForm
-    return render(request, 'cadastro_empresa.html', context)
+    if request.method != 'POST':
+        return render(request, 'cadastro_empresa.html', context)
+    
+    nome = request.POST.get('nome')
+    context['form'] = EmpresaForm(request.POST, request.FILES)
+    logo = request.POST.get('logo')
+    if logo == '':
+        logo = 'images/logo.jpg'
+    foto = request.POST.get('foto')
+    if foto == '':
+        foto = 'images/empresa.jpg'
+    descricao = request.POST.get('descricao')
+    data_de_criacao = request.POST.get('data_de_criacao')
+    fundador = request.POST.get('fundador')
+    valor = request.POST.get('valor')
+    
+    link =  nome.replace(' ', '-').lower()
+    
+    Empresa.objects.create(nome=nome, logo=logo, foto=foto, descricao=descricao, data_de_criacao=data_de_criacao,
+                           fundador=fundador, valor=valor, presidente=user, link=link)
+    
+    return redirect('minha_conta')
 
 
 @login_required

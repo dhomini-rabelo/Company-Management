@@ -1,12 +1,32 @@
-document.addEventListener('load', adapt_labels);
-
+document.addEventListener('DOMContentLoaded', adapt_labels)
 
 function adapt_labels(){
-    let weLabels = document.querySelectorAll('label');
-    let weH2 = document.querySelectorAll('h2');
-    weH2.innerText = 'arroz';
+    let weTextArea = document.querySelector('textarea')
+    let weLabels = document.querySelectorAll('label')
+    let weInputs = document.querySelectorAll('input')
+
+    weTextArea.setAttribute('rows', '2')
+    weTextArea.setAttribute('required', '')
+
     weLabels.forEach((label) => {
-        label.setAttribute('class', '')
-        label.innerText += ':'
-    });
+        if ('span' === label.innerHTML.slice(label.innerHTML.length - 6, label.innerHTML.length - 2)){
+            label.innerHTML = label.innerHTML.slice(0, label.innerHTML.length - 35)
+            label.innerHTML += ':'
+        }else{
+            label.innerHTML = `${label.innerHTML.slice(0, label.innerHTML.length - 13)}:`
+        }
+    })
+
+    weInputs.forEach((input) => {
+        let type = input.getAttribute('type')
+        if (type !== 'file' && type !== 'submit'&& type !== 'hidden'){
+            input.setAttribute('required', '')
+            input.setAttribute('value', '')
+        }
+        if (type === 'text' && input.getAttribute('name').slice(0, 4) == 'data'){
+            input.setAttribute('type', 'date')
+            input.setAttribute('value', '2021-01-01')
+        }
+    })
+
 }
