@@ -14,7 +14,7 @@ class FuncionarioAdmin(admin.ModelAdmin):
 
 @admin.register(Empresa)
 class EmpresaAdmin(admin.ModelAdmin):
-    list_display = 'icone_logo', 'nome', 'presidente', 'valor', 'n_funcionarios'
+    list_display = 'icone_logo', 'nome', 'presidente', 'valor', 'n_funcionarios', 'id'
     list_display_links = 'nome',
     
     
@@ -23,3 +23,7 @@ class DespesaAdmin(admin.ModelAdmin):
     list_display = 'nome', 'valor', 'empresa',
     list_display_links = 'nome',
     
+@admin.register(Solicitacao)
+class SolicitacaoAdmin(admin.ModelAdmin):
+    list_display = 'usuario', 'empresa', 'status', 'resposta'
+    list_display_links = 'status',

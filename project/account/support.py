@@ -1,7 +1,7 @@
 from django.core.validators import validate_email
 from django.shortcuts import render
 from django.contrib import messages, auth
-from account.models import User
+from .models import User
 from empresa.models import *
 from string import ascii_letters, digits
 
@@ -11,7 +11,6 @@ def is_funcionario(user):
     if len(res) > 0:
         return True
     return False
-        
 
 def exist_session(request, session_name: str):
     try:
@@ -30,6 +29,8 @@ def user_make_login(request):
 def checks_null(input_list: list):
     for we in input_list:
         if len(we) == 0 or we is None:
+            return True
+        elif isinstance(we, str) and we.strip() == '':
             return True
     return False
 

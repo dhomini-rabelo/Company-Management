@@ -8,5 +8,5 @@ app = DjangoApp(bp, app_name)
 
 
 #* Criar form
-model = 'EmpresaForm'
+model = 'Funcionario'
 app.create_form(model)

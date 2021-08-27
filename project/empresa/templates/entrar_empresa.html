@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block 'title' %}ENTRAR EMPRESA{% endblock %}
+
+{% block  'content' %}
+<div id="division">
+    {% include 'Parts/_aside.html' %}
+    <main style="text-align: left; width: 600px; margin-top: 10px;">
+        <h3 style="text-align: center;">SOLICITAÇÃO PARA ENTRAR EM EMPRESA</h3>
+        <form method="POST" action="{% url 'cadastro' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="nome_empresa">Nome da empresa:</label>
+                <input type="text" class="form-control" name="nome_empresa" style="width: 600px;">
+            </div>
+            <div class="form-group">
+                <label for="id_empresa">ID da empresa:</label>
+                <input type="number" class="form-control" name="id_empresa" style="width: 600px;">
+            </div>
+            <div id="btn">
+                <button type="submit" class="btn btn-primary">ENVIAR SOLICITAÇÃO </button>
+            </div>
+          </form>
+    </main>
+</div>
+{% endblock %}

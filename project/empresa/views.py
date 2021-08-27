@@ -2,11 +2,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages, auth
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
-from django.core.validators import validate_slug, validate_unicode_slug 
 from decimal import Decimal
 from account.support import *
 from .models import *
 from .forms import EmpresaForm
+from .support import *
 
 def home(request):
     return render(request, 'home.html')
@@ -19,13 +19,32 @@ def minha_conta(request):
     
     if user.empresario:
         empresas_presidente = Empresa.objects.filter(presidente=user)
+        solicitacoes_empresa = list()
+        for empresa in empresas_presidente:
+            print(empresa)
+            if empresa is not None:
+                solicitacao = Solicitacao.objects.get(empresa=empresa)
+            if solicitacao is not None:
+                solicitacoes_empresa.append(solicitacao)
+                
+        context['solicitacoes_empresa'] = solicitacoes_empresa
         context['empresas_presidente'] = empresas_presidente
+        
     if is_funcionario(user):
         funcionario = Funcionario.objects.filter(codigo=user.id)
         empresas_funcionario = Empresa.objects.filter(Funcionario=funcionario)
+        
+        solicitacoes_funcionario = list()
+        for empresa in empresas_funcionario:
+            solicitacao = Solicitacao.objects.get(usuario=user, resposta='nenhuma', status='em_andamento')
+            if solicitacao is not None:
+                solicitacoes_funcionario.append(solicitacao)
+                
+        context['solicitacoes_funcionario'] = solicitacoes_funcionario
         context['empresas_funcionario'] = empresas_funcionario 
         
-    if context.get('empresas_presidente') is None and context.get('empresas_funcionario') is None:
+    contexts = ['empresas_funcionario', 'empresas_presidente', 'solicitacoes_funcionario', 'empresas_presidente']
+    if is_none_dict(context, contexts):
         return redirect('nova_empresa')
     
     return render(request, 'minha_conta.html', context)
@@ -73,6 +92,31 @@ def nova_empresa(request):
     return render(request, 'nova_empresa.html')
 
 @login_required
+def entrar_empresa(request):
+    user = auth.get_user(request)
+    
+    if request.method != 'POST':
+        return render(request, 'entrar_empresa.html')
+    
+    nome_empresa = request.POST.get('nome_empresa')
+    id_empresa = request.POST.get('id_empresa')
+    
+    if checks_null([nome_empresa, id_empresa]):
+        empresa = Empresa.objects.get(nome=nome_empresa, id=id_empresa)
+        print(empresa)
+        if empresa is not None:
+            Solicitacao.objects.create(usuario=user, empresa=empresa, status='em_andamento', resposta='nenhuma')
+            messages.success(request, 'Solicitação criada com sucesso')
+            return redirect('minha_conta')
+        else:
+            messages.error(request, 'Empresa não encontrada')
+            return redirect('entrar_empresa')
+        
+    messages.error(request, 'Valores inválidos')
+    return redirect('entrar_empresa')
+
+
+@login_required
 def cadastro_empresa(request):
     user = auth.get_user(request)
     context = dict()
@@ -82,18 +126,24 @@ def cadastro_empresa(request):
     
     nome = request.POST.get('nome')
     context['form'] = EmpresaForm(request.POST, request.FILES)
+    
     logo = request.POST.get('logo')
-    if logo == '':
+    if checks_null([logo]):
         logo = 'images/logo.jpg'
+        
     foto = request.POST.get('foto')
-    if foto == '':
+    if checks_null([foto]):
         foto = 'images/empresa.jpg'
+    
     descricao = request.POST.get('descricao')
     data_de_criacao = request.POST.get('data_de_criacao')
     fundador = request.POST.get('fundador')
     valor = request.POST.get('valor')
     
-    link =  nome.replace(' ', '-').lower()
+    if not validate_cadastro_empresa(request, nome, descricao, data_de_criacao, fundador, valor):
+        return render(request, 'cadastro_empresa.html', context)
+    
+    link =  set_slug(nome.replace(' ', '-').lower())
     
     Empresa.objects.create(nome=nome, logo=logo, foto=foto, descricao=descricao, data_de_criacao=data_de_criacao,
                            fundador=fundador, valor=valor, presidente=user, link=link)
@@ -112,7 +162,7 @@ def info_empresa(request, link):
 @login_required
 def lista_funcionarios(request, link):
     context = dict()
-    empresa = Empresa.objects.get(link=link)        
+    empresa = Empresa.objects.get(link='arroz')        
     context['empresa'] = empresa
     funcionarios = empresa.funcionarios.filter(demitido=False).order_by('nome')
     

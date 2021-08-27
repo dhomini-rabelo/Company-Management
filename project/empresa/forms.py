@@ -7,3 +7,8 @@ class EmpresaForm(ModelForm):
       exclude = 'presidente', 'funcionarios', 'link', 'despesas'
       model = Empresa
       
+
+class FuncionarioForm(ModelForm):
+    class Meta:
+      exclude = 'codigo', 'demitido'
+      model = Funcionario

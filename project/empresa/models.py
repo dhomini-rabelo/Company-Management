@@ -1,4 +1,5 @@
 from django.db.models import (Model, CharField, DateTimeField, TextField, EmailField, ForeignKey, PositiveIntegerField, ImageField, DO_NOTHING, DecimalField, DateField, BooleanField, CASCADE, PositiveBigIntegerField)
+from django.db.models.deletion import RESTRICT
 from django.db.models.fields import SlugField
 from django.db.models.fields.related import ManyToManyField
 from django.utils.safestring import mark_safe
@@ -12,6 +13,11 @@ def get_codigo():
     number = last_number - len(Funcionario.objects.all())
     return number
 
+def get_codigo_empresa():
+    last_number = 9000000000000000000
+    number = last_number - len(Empresa.objects.all())
+    return number
+
     
 class Funcionario(Model):
     nome = CharField(max_length=120)
@@ -23,6 +29,7 @@ class Funcionario(Model):
     cpf = CharField('CPF', max_length=25, unique=True, blank=True)
     data_registro = DateField('Data de registro', auto_now_add=True)
     demitido = BooleanField(default=False)
+    email = EmailField(default='example@email.com', blank=True)
     ultima_mudanca = DateField('Última mudança', auto_now=True)
     profissao = CharField(max_length=120, default='')
     bio = TextField(default='', blank=True)
@@ -69,6 +76,24 @@ class Despesa(Model):
     descricao = TextField('Descrição', blank=True) 
     valor = DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'), blank=True)
     empresa = ForeignKey(Empresa, on_delete=DO_NOTHING, blank=True, null=True)
+    
+class Solicitacao(Model):
+    usuario = ForeignKey(User, on_delete=RESTRICT)
+    empresa = ForeignKey(Empresa, on_delete=RESTRICT)
+    POSSIBLE_STATUS = [
+        ('aceito', 'ACEITO'),
+        ('recusado', 'RECUSADO'),
+        ('em_andamento', 'EM ANDAMENTO'),
+        ('interrompido', 'INTERROMPIDO'),
+        ('finalizado', 'FINALIZADO'),
+    ]
+    RESPOSTAS =[
+        ('aceito', 'ACEITO'),
+        ('recusado', 'RECUSADO'),
+        ('nenhuma', 'NENHUMA')
+    ]
+    status = CharField(max_length=15, choices=POSSIBLE_STATUS)
+    resposta = CharField(max_length=15, choices=RESPOSTAS)
     
 # class Setor(Model):
 #     nome = CharField(max_length=120)
