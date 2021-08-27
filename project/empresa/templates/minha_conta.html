@@ -7,7 +7,6 @@
 <div id="division" style="height: auto;">
     {% include 'Parts/_aside.html' %}
     <main>
-      {% include 'Parts/_solicitacoes.html' %}
       {% if empresas_presidente %}
       {% for empresa in empresas_presidente %}
       <div class="divMyCompanyf">
@@ -40,6 +39,7 @@
       {% for empresa in empresas_funcionario %}
       {% endfor %}
       {% endif %}
+      {% include 'Parts/_solicitacoes.html' %}
     </main>
 </div>
 {% endblock %}

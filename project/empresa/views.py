@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 from decimal import Decimal
 from account.support import *
 from .models import *
-from .forms import EmpresaForm
+from .forms import EmpresaForm, GestorForm
 from .support import *
 
 def home(request):
@@ -16,37 +16,53 @@ def home(request):
 def minha_conta(request):
     user = auth.get_user(request)
     context = dict()
+    if request.method == 'POST':
+        # funcionario
+        status = request.POST.get('status')
+        id_solicitacao = request.POST.get('solicitacao')
+        if not checks_null([id_solicitacao, status]):
+            edit_solicitacao = Solicitacao.objects.get(id=id_solicitacao)
+            edit_solicitacao.status = status
+            edit_solicitacao.save()
+        # empresario
+        resposta = request.POST.get('resposta')
+        id_solicitacao_empresa = request.POST.get('solicitacao_empresa')
+        if not checks_null([id_solicitacao_empresa, resposta]):
+            edit_solicitacao_empresa = Solicitacao.objects.get(id=id_solicitacao_empresa)
+            edit_solicitacao_empresa.resposta = 'aceito' if resposta == 'sim' else 'recusado'
+            edit_solicitacao_empresa.save()
+        
+        
+    solicitacoes_funcionario = list()
+    solicitacoes = Solicitacao.objects.filter(usuario=user).exclude(status='finalizado')
+    if not checks_null([solicitacoes]):
+        for solicitacao in solicitacoes:
+            if solicitacao.resposta == 'aceito' and solicitacao.status == 'respondido':
+                return redirect('cadastro gestor')
+            solicitacoes_funcionario.append(solicitacao)
+            
+    context['solicitacoes_funcionario'] = solicitacoes_funcionario
     
     if user.empresario:
         empresas_presidente = Empresa.objects.filter(presidente=user)
         solicitacoes_empresa = list()
         for empresa in empresas_presidente:
-            print(empresa)
-            if empresa is not None:
-                solicitacao = Solicitacao.objects.get(empresa=empresa)
-            if solicitacao is not None:
-                solicitacoes_empresa.append(solicitacao)
-                
+            solicitacoes = Solicitacao.objects.filter(empresa=empresa, resposta='nenhuma', status='em_andamento')
+            if not checks_null([solicitacoes]):
+                for solicitacao in solicitacoes:
+                    solicitacoes_empresa.append(solicitacao)
         context['solicitacoes_empresa'] = solicitacoes_empresa
         context['empresas_presidente'] = empresas_presidente
         
     if is_funcionario(user):
         funcionario = Funcionario.objects.filter(codigo=user.id)
         empresas_funcionario = Empresa.objects.filter(Funcionario=funcionario)
-        
-        solicitacoes_funcionario = list()
-        for empresa in empresas_funcionario:
-            solicitacao = Solicitacao.objects.get(usuario=user, resposta='nenhuma', status='em_andamento')
-            if solicitacao is not None:
-                solicitacoes_funcionario.append(solicitacao)
-                
-        context['solicitacoes_funcionario'] = solicitacoes_funcionario
         context['empresas_funcionario'] = empresas_funcionario 
+        
         
     contexts = ['empresas_funcionario', 'empresas_presidente', 'solicitacoes_funcionario', 'empresas_presidente']
     if is_none_dict(context, contexts):
         return redirect('nova_empresa')
-    
     return render(request, 'minha_conta.html', context)
 
 
@@ -92,20 +108,27 @@ def nova_empresa(request):
     return render(request, 'nova_empresa.html')
 
 @login_required
-def entrar_empresa(request):
+def cadastro_gestor(request):
+    # falta foto e attr demitido
     user = auth.get_user(request)
-    
+    context = dict()
+    context['form'] = GestorForm
+    return render(request, 'cadastro_gestor.html', context)
+
+@login_required
+def entrar_empresa(request):
     if request.method != 'POST':
         return render(request, 'entrar_empresa.html')
+    
+    user = auth.get_user(request)
     
     nome_empresa = request.POST.get('nome_empresa')
     id_empresa = request.POST.get('id_empresa')
     
-    if checks_null([nome_empresa, id_empresa]):
-        empresa = Empresa.objects.get(nome=nome_empresa, id=id_empresa)
-        print(empresa)
-        if empresa is not None:
-            Solicitacao.objects.create(usuario=user, empresa=empresa, status='em_andamento', resposta='nenhuma')
+    if not checks_null([nome_empresa, id_empresa]):
+        empresa = Empresa.objects.filter(nome=nome_empresa, id=id_empresa)
+        if not checks_null([empresa]):
+            Solicitacao.objects.create(usuario=user, empresa=empresa[0], status='em_andamento', resposta='nenhuma')
             messages.success(request, 'Solicitação criada com sucesso')
             return redirect('minha_conta')
         else:
@@ -162,7 +185,7 @@ def info_empresa(request, link):
 @login_required
 def lista_funcionarios(request, link):
     context = dict()
-    empresa = Empresa.objects.get(link='arroz')        
+    empresa = Empresa.objects.get(link=link) # error 404 se nao char link        
     context['empresa'] = empresa
     funcionarios = empresa.funcionarios.filter(demitido=False).order_by('nome')
     

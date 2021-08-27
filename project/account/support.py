@@ -28,7 +28,9 @@ def user_make_login(request):
 
 def checks_null(input_list: list):
     for we in input_list:
-        if len(we) == 0 or we is None:
+        if we is None:
+            return True
+        elif len(we) == 0:
             return True
         elif isinstance(we, str) and we.strip() == '':
             return True

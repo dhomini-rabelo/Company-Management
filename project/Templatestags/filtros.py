@@ -24,3 +24,7 @@ def _grana(valor):
 @register.filter(name='full')
 def _full(full_path):
     return full_path[:-1]
+
+@register.filter(name='capitalize')
+def _capitalize(string):
+    return string.replace('_',' ').replace('-',' ').capitalize()

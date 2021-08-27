@@ -6,7 +6,7 @@ from datetime import datetime
 
 def is_none_dict(dictionary: dict, objects: list):
     for obj in objects:
-        if dictionary.get(obj) is not None:
+        if not checks_null([dictionary.get(obj)]):
             return False
     return True
 

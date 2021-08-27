@@ -20,7 +20,7 @@ class EmpresaAdmin(admin.ModelAdmin):
     
 @admin.register(Despesa)
 class DespesaAdmin(admin.ModelAdmin):
-    list_display = 'nome', 'valor', 'empresa',
+    list_display = 'nome', 'valor', 'empresa', 
     list_display_links = 'nome',
     
 @admin.register(Solicitacao)

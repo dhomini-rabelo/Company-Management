@@ -19,7 +19,9 @@ function adapt_labels(){
 
     weInputs.forEach((input) => {
         let type = input.getAttribute('type')
-        if (type !== 'file' && type !== 'submit'&& type !== 'hidden'){
+        let name = input.getAttribute('name')
+        let nameExceptions = {'nome_user':1, 'email_user':3}
+        if ((type !== 'file' && type !== 'submit' && type !== 'hidden')&&(!(name in nameExceptions))){
             input.setAttribute('required', '')
             input.setAttribute('value', '')
         }

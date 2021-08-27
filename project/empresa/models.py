@@ -81,8 +81,7 @@ class Solicitacao(Model):
     usuario = ForeignKey(User, on_delete=RESTRICT)
     empresa = ForeignKey(Empresa, on_delete=RESTRICT)
     POSSIBLE_STATUS = [
-        ('aceito', 'ACEITO'),
-        ('recusado', 'RECUSADO'),
+        ('respondido', 'RESPONDIDO'),
         ('em_andamento', 'EM ANDAMENTO'),
         ('interrompido', 'INTERROMPIDO'),
         ('finalizado', 'FINALIZADO'),

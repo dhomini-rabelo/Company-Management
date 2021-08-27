@@ -1,18 +1,21 @@
+{% load filtros %}
+
 {% if solicitacoes_empresa %}
 {% for solicitacao in solicitacoes_empresa %}
 <div class="divMyCompanyf">
     <section class="myCompanyf">
         <div class="titleMyCompanyf" style="height: 40px;">
             <img src="/media/{{ solicitacao.empresa.logo }}" alt="logo" style="width: 40px; height: 30px; margin-top: 0px; margin-bottom: 10px;">
-            <a href="{% url 'info_empresa' empresa.link %}" style="font-size: 20PX;">{{ solicitacao.empresa.nome }} - {{ solicitacao.empresa.data_de_criacao|ano }}</a>
+            <a href="{% url 'info_empresa' solicitacao.empresa.link %}" style="font-size: 20PX;">{{ solicitacao.empresa.nome }} - {{ solicitacao.empresa.data_de_criacao|ano }}</a>
         </div>
-        <div class="bodyMyCompanyf">
+        <div class="bodyMyCompanyf" style="justify-content: space-between;">
             <p>
-                {{ solicitacao.usuario.nome }} pode gerenciar sua empresa?
+                {{ solicitacao.usuario.first_name }} pode gerenciar sua empresa?
             </p>
             <form action="POST">
+                <input type="text" name="solicitacao_empresa" id="id_solicitacao" style="display: none;" value="{{ solicitacao.id }}" readonly>
                 <div id="btn"  style="text-align: left;">
-                    <button type="submit" class="btn btn-sucess" name="resposta" value="sim">SIM</button>
+                    <button type="submit" class="btn btn-success" name="resposta" value="sim">SIM</button>
                     <button type="submit" class="btn btn-danger" name="resposta" value="nao">NÃO</button>
                 </div>
             </form>
@@ -32,15 +35,21 @@
             <img src="/media/{{ solicitacao.empresa.logo }}" alt="logo" style="width: 40px; height: 30px; margin-top: 0px; margin-bottom: 10px;">
             <a href="{% url 'info_empresa' solicitacao.empresa.link %}" style="font-size: 20PX;">{{ solicitacao.empresa.nome }} - {{ solicitacao.empresa.data_de_criacao|ano }}</a>
         </div>
-        <div class="bodyMyCompanyf">
+        <div class="bodyMyCompanyf" style="justify-content: space-between;">
             <p>
-                STATUS: {{ solicitacao.status }}
-                RESPOSTA: {{ solicitacao.resposta }}
+                STATUS: {{ solicitacao.status|capitalize }}<br>
+                RESPOSTA: {{ solicitacao.resposta|capitalize }}<br>
             </p>
-            <form action="POST">
+            <form method="POST">
                 <div id="btn"  style="text-align: left;">
-                    <button type="submit" class="btn btn-danger" name="resposta" value="finalizado">FINALIZAR</button>
-                    <button type="submit" class="btn btn-danger" name="resposta" value="interrompido">INTERROMPIDO</button>
+                    {% csrf_token %}
+                    <input type="text" name="solicitacao" id="id_solicitacao" style="display: none;" value="{{ solicitacao.id }}" readonly>
+                    {% if solicitacao.status == 'em_andamento'  %}
+                    <button type="submit" class="btn btn-danger" name="status" value="interrompido">INTERROMPER</button>
+                    {% elif solicitacao.status == 'interrompido'  %}
+                    <button type="submit" class="btn btn-success" name="status" value="em_andamento">REENVIAR</button>
+                    {% endif %}
+                    <button type="submit" class="btn btn-danger" name="status" value="finalizado">FINALIZAR</button>
                 </div>
             </form>
         </div>

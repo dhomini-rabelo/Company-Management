@@ -34,6 +34,8 @@ def cadastro(request):
         return render(request, 'cadastro.html')
     
     foto = request.POST.get('foto')
+    if checks_null([foto]):
+        foto = 'images/empresa.jpg'
     nome = request.POST.get('nome').title()
     email = request.POST.get('email')
     usuario = request.POST.get('usuario')
