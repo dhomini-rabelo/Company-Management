@@ -1,6 +1,6 @@
 from django.core.validators import validate_slug, validate_unicode_slug 
 from decimal import Decimal
-from account.support import checks_null
+from account.support import checks_null, validate_for_email
 from django.contrib import messages
 from datetime import datetime
 
@@ -52,3 +52,19 @@ def validate_cadastro_empresa(request, nome, descricao, data_de_criacao, fundado
     else: 
         return True
 
+
+def validate_cadastro_gestor(request, nome, email, foto, codigo,  idade, salario, telefone_pessoal, telefone_comercial, cpf, profissao, bio):
+    fields = [nome, email, foto, codigo, telefone_pessoal, telefone_comercial, cpf, profissao, bio]
+    if checks_null(fields):
+        messages.error(request, 'Algum campo não foi preenchido')
+        return False
+    elif check_invalid_decimal(salario):
+        messages.error(request, 'Valor não é válido')
+        return False
+    elif check_invalid_decimal(idade):
+        messages.error(request, 'Valor não é válido')
+        return False
+    elif not validate_for_email(email):
+        return False
+    else:
+        return True

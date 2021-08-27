@@ -10,7 +10,7 @@
     {% include 'Parts/_aside.html' %}
     <main style="width: 650px; border: 3px solid black; padding: 25px; margin-top: 10px; border-radius: 20px;">
         <h2 class="mt-3 mb-3">Complete seu cadastro como gestor</h2>
-        <form method="POST" action="{% url 'cadastro_gestor' %}"  style="text-align: left;">
+        <form method="POST" style="text-align: left;">
             <div id="div_id_nome" class="form-group">
                 <label for="id_nome_user" class=" requiredField"> Nome    </label> 
                 <div class=""> 
@@ -22,6 +22,7 @@
                 <div class=""> <input type="email" name="email_user" value="{{ user.email }}" maxlength="254" class="emailinput form-control" id="id_email_user" required> </div> </div>
             {% csrf_token %}
             {{ form|crispy }}
+            <br>
             <div id="btn"  style="text-align: right;">
                 <button type="submit" class="btn btn-primary">SALVAR</button>
             </div>

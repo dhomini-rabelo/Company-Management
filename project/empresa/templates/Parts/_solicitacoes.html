@@ -12,7 +12,8 @@
             <p>
                 {{ solicitacao.usuario.first_name }} pode gerenciar sua empresa?
             </p>
-            <form action="POST">
+            <form method="POST">
+                {% csrf_token %}
                 <input type="text" name="solicitacao_empresa" id="id_solicitacao" style="display: none;" value="{{ solicitacao.id }}" readonly>
                 <div id="btn"  style="text-align: left;">
                     <button type="submit" class="btn btn-success" name="resposta" value="sim">SIM</button>
@@ -48,6 +49,8 @@
                     <button type="submit" class="btn btn-danger" name="status" value="interrompido">INTERROMPER</button>
                     {% elif solicitacao.status == 'interrompido'  %}
                     <button type="submit" class="btn btn-success" name="status" value="em_andamento">REENVIAR</button>
+                    {% elif solicitacao.resposta == 'aceito'  %}
+                    <a href="{% url 'cadastro_gestor' solicitacao.empresa.link %}" class="btn btn-success">ENTRAR</a>
                     {% endif %}
                     <button type="submit" class="btn btn-danger" name="status" value="finalizado">FINALIZAR</button>
                 </div>

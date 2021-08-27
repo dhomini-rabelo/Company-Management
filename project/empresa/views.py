@@ -7,6 +7,7 @@ from account.support import *
 from .models import *
 from .forms import EmpresaForm, GestorForm
 from .support import *
+from django.utils import timezone
 
 def home(request):
     return render(request, 'home.html')
@@ -30,6 +31,7 @@ def minha_conta(request):
         if not checks_null([id_solicitacao_empresa, resposta]):
             edit_solicitacao_empresa = Solicitacao.objects.get(id=id_solicitacao_empresa)
             edit_solicitacao_empresa.resposta = 'aceito' if resposta == 'sim' else 'recusado'
+            edit_solicitacao_empresa.status = 'respondido'
             edit_solicitacao_empresa.save()
         
         
@@ -37,8 +39,6 @@ def minha_conta(request):
     solicitacoes = Solicitacao.objects.filter(usuario=user).exclude(status='finalizado')
     if not checks_null([solicitacoes]):
         for solicitacao in solicitacoes:
-            if solicitacao.resposta == 'aceito' and solicitacao.status == 'respondido':
-                return redirect('cadastro gestor')
             solicitacoes_funcionario.append(solicitacao)
             
     context['solicitacoes_funcionario'] = solicitacoes_funcionario
@@ -55,9 +55,17 @@ def minha_conta(request):
         context['empresas_presidente'] = empresas_presidente
         
     if is_funcionario(user):
-        funcionario = Funcionario.objects.filter(codigo=user.id)
-        empresas_funcionario = Empresa.objects.filter(Funcionario=funcionario)
-        context['empresas_funcionario'] = empresas_funcionario 
+        funcionario = Funcionario.objects.filter(codigo=user.id)[0]
+        empresas_funcionario = list()
+        solicitacoes_aceitas = Solicitacao.objects.filter(usuario=user, status='finalizado', resposta='aceito')
+        for solicitacao in solicitacoes_aceitas:
+            funcionarios_empresa_solicitada = solicitacao.empresa.funcionarios.all()
+            for funcionario_empresa in funcionarios_empresa_solicitada:
+                if funcionario_empresa == funcionario:
+                    empresas_funcionario.append(solicitacao.empresa)
+                    break
+        print(empresas_funcionario)
+        context['empresas_funcionario'] = empresas_funcionario
         
         
     contexts = ['empresas_funcionario', 'empresas_presidente', 'solicitacoes_funcionario', 'empresas_presidente']
@@ -108,12 +116,40 @@ def nova_empresa(request):
     return render(request, 'nova_empresa.html')
 
 @login_required
-def cadastro_gestor(request):
-    # falta foto e attr demitido
-    user = auth.get_user(request)
+def cadastro_gestor(request, link):
     context = dict()
-    context['form'] = GestorForm
-    return render(request, 'cadastro_gestor.html', context)
+    if request.method != 'POST':
+        context['form'] = GestorForm
+        return render(request, 'cadastro_gestor.html', context)
+        
+    user = auth.get_user(request)
+    empresa = Empresa.objects.filter(link=link)[0]
+    solicitacao = Solicitacao.objects.get(empresa=empresa, usuario=user)
+
+    nome = request.POST.get('nome_user')
+    email = request.POST.get('email_user')
+    foto = user.foto
+    codigo = user.id
+    idade = request.POST.get('idade')
+    salario = request.POST.get('salario')
+    telefone_pessoal = request.POST.get('telefone_pessoal')
+    telefone_comercial = request.POST.get('telefone_comercial')
+    cpf = request.POST.get('cpf')
+    profissao = request.POST.get('profissao')
+    bio = request.POST.get('bio')
+    
+    if validate_cadastro_gestor(request, nome, email, foto, codigo,  idade, salario, telefone_pessoal, telefone_comercial, cpf, profissao, bio):
+        Funcionario.objects.create(nome=nome, idade=idade, foto=foto, email=email, codigo=codigo, salario=salario, telefone_pessoal=telefone_pessoal, telefone_comercial=telefone_comercial, cpf=cpf, profissao=profissao, bio=bio, ultima_mudanca=timezone.now, data_registro=timezone.now, demitido=False)
+        solicitacao.status = 'finalizado'
+        solicitacao.save()
+        empresa.funcionarios.add(Funcionario.objects.get(codigo=user.id))
+        empresa.save()
+        return redirect('minha_conta')
+    else:
+        context['form'] = GestorForm(request.POST)
+        return render(request, 'cadastro_gestor.html', context)
+        
+    
 
 @login_required
 def entrar_empresa(request):
