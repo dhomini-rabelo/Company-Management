@@ -1,5 +1,7 @@
-from decimal import Decimal
-Decimal('1.00') + Decimal(1)
+from ..empresa.support import iter_list
+
+a = iter_list(['1','2'])
+print(a.next())
 
 
 

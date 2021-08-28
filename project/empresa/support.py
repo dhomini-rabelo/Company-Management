@@ -68,3 +68,4 @@ def validate_cadastro_gestor(request, nome, email, foto, codigo,  idade, salario
         return False
     else:
         return True
+    

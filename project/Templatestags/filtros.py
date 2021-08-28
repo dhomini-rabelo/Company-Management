@@ -28,3 +28,11 @@ def _full(full_path):
 @register.filter(name='capitalize')
 def _capitalize(string):
     return string.replace('_',' ').replace('-',' ').capitalize()
+
+@register.filter(name='enumerate')
+def _enumerate(iterable):
+    return enumerate(iterable)
+
+@register.filter(name='next')
+def _next(obj):
+    return next(obj)

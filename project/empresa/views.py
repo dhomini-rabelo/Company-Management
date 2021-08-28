@@ -55,16 +55,19 @@ def minha_conta(request):
         context['empresas_presidente'] = empresas_presidente
         
     if is_funcionario(user):
-        funcionario = Funcionario.objects.filter(codigo=user.id)[0]
         empresas_funcionario = list()
+        profissoes = list()
+        funcionario = Funcionario.objects.filter(codigo=user.id)[0]
         solicitacoes_aceitas = Solicitacao.objects.filter(usuario=user, status='finalizado', resposta='aceito')
         for solicitacao in solicitacoes_aceitas:
             funcionarios_empresa_solicitada = solicitacao.empresa.funcionarios.all()
             for funcionario_empresa in funcionarios_empresa_solicitada:
                 if funcionario_empresa == funcionario:
+                    profissoes.append(funcionario.profissao)
                     empresas_funcionario.append(solicitacao.empresa)
                     break
-        print(empresas_funcionario)
+        profissoes.append('hello')
+        context['profissoes'] = iter(profissoes)
         context['empresas_funcionario'] = empresas_funcionario
         
         

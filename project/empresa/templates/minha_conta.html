@@ -37,7 +37,30 @@
 
       {% if empresas_funcionario %}
       {% for empresa in empresas_funcionario %}
-      oi
+      <div class="divMyCompanyf">
+        <section class="myCompanyf">
+            <div class="titleMyCompanyf" style="height: 40px;">
+                <img src="/media/{{ empresa.logo }}" alt="logo" style="width: 40px; height: 30px; margin-top: 0px; margin-bottom: 10px;">
+                <a href="{% url 'info_empresa' empresa.link %}" style="font-size: 20PX;">{{ empresa.nome }} - {{ empresa.data_de_criacao|ano }}</a>
+            </div>
+            <div class="bodyMyCompanyf">
+                <div class="funcionario">
+                    <img src="/media/{{ user.foto }}" alt="perfil" style="width: 250px; height: 225px;">
+                    <p>
+                      <br>Nome: {{ user.first_name }}
+                      <br>Profissão: {{ profissoes|next  }}
+                      <br>Profissão: {{ profissoes|next  }}
+                    </p>
+                </div>
+                <div class="funcionarioTasks">
+                    Tarefas:<br>
+                    - Atualizar noticías<br>
+                    - Nova noticía<br>
+                </div>
+            </div>
+        </section>
+      </div>
+      <br>
       {% endfor %}
       {% endif %}
       {% include 'Parts/_solicitacoes.html' %}
