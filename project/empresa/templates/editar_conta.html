@@ -6,49 +6,76 @@
 <div id="division">
     {% include 'Parts/_aside.html' %}
     <main>
-        INFORMAÇÕES PESSOAIS
-        <section>
-            <form action="{% url 'editar_conta' %}" method='POST'>
-                <p>
-                    {% csrf_token %}
-                    <label for="usuario">Nome de usuário: </label>
-                    <input type="text" value="{{ user.username }}" name="usuario">
-                    <button class="btn btn-primary" type="submit" >SALVAR</button>
-                </p>
-            </form>
-            <br>
-            <form action="{% url 'editar_conta' %}" method='POST'>
-                <p>
-                    {% csrf_token %}
-                    <label for="nome">Nome: </label>
-                    <input type="text" value="{{ user.first_name }}" name="nome">
-                    <button class="btn btn-primary" type="submit">SALVAR</button>
-                </p>
-            </form>
-            <br>
-            <form action="{% url 'editar_conta' %}" method='POST'>
-                <p>
-                    {% csrf_token %}
-                    <label for="email">Email: </label>
-                    <input type="text" value="{{ user.email }}" name="email">
-                    <button class="btn btn-primary" type="submit">SALVAR</button>
-                </p>
-            </form>
-            <br>
-            <form action="{% url 'editar_conta' %}" method='POST'>
-                <p id="password">
-                    {% csrf_token %}
-                    <label for="senha_atual">Senha Atual: </label>
-                    <input type="password" name="senha_atual"><br>
-                    <label for="nova_senha">Nova senha: </label>
-                    <input type="password" name="nova_senha"><br>
-                    <label for="nova_senha2">Confirmar nova senha: </label>
-                    <input type="password" name="nova_senha2"><br>
-                    <button class="btn btn-primary" type="submit">ALTERAR SENHA</button>
-                </p>
-            </form>
-            <br>
-        </section>
-    </main>
+        <div class="divMyCompanyf">
+          <section class="myCompanyf">
+              <div class="titleMyCompanyf">
+                  DADOS CADASTRADOS DA SUA CONTA 
+              </div>
+              <div class="bodyMyCompanyf">
+                  <div class="funcionario">
+                      <img src="/media/{{ user.foto }}" alt="perfil" style="width: 250px; height: 225px;">
+                      <form method='POST' enctype="multipart/form-data">
+                        <p>
+                            {% csrf_token %}
+                            {{ image_form }}
+                            <div></div>
+                            <button class="btn btn-primary" type="submit">ALTERAR FOTO</button>
+                        </p>
+                        </form>
+                        Nome: {{ user.first_name }}
+                        <br>Username: {{ user.username }}
+                        <br>Email: {{ user.email }}
+                  </div>
+                  <div class="funcionarioTasks">
+                      <p>
+                          Faça alterações
+                          <section>
+                            <form action="{% url 'editar_conta' %}" method='POST'>
+                                <p>
+                                    {% csrf_token %}
+                                    <label for="usuario">Nome de usuário: </label>
+                                    <input type="text" value="{{ user.username }}" name="usuario">
+                                    <button class="btn btn-primary" type="submit" >ALTERAR USERNAME</button>
+                                </p>
+                            </form>
+                            <form action="{% url 'editar_conta' %}" method='POST'>
+                                <p>
+                                    {% csrf_token %}
+                                    <label for="nome">Nome: </label>
+                                    <input type="text" value="{{ user.first_name }}" name="nome">
+                                    <button class="btn btn-primary" type="submit">ALTERAR NOME</button>
+                                </p>
+                            </form>
+                            <form action="{% url 'editar_conta' %}" method='POST'>
+                                <p>
+                                    {% csrf_token %}
+                                    <label for="email">Email: </label>
+                                    <input type="text" value="{{ user.email }}" name="email">
+                                    <button class="btn btn-primary" type="submit">ALTERAR EMAIL</button>
+                                </p>
+                            </form>
+                            <form action="{% url 'editar_conta' %}" method='POST'>
+                                <p id="password">
+                                    {% csrf_token %}
+                                    <label for="senha_atual">Senha Atual: </label>
+                                    <input type="password" name="senha_atual"><br>
+                                    <label for="nova_senha">Nova senha: </label>
+                                    <input type="password" name="nova_senha"><br>
+                                    <label for="nova_senha2">Confirmar nova senha: </label>
+                                    <input type="password" name="nova_senha2"><br>
+                                    <button class="btn btn-primary" type="submit">ALTERAR SENHA</button>
+                                </p>
+                            </form>
+                        </section>
+                      </p>
+                  </div>
+              </div>
+          </section>
+        </div>
+      </main>
+  </div>
+    <!-- <main>
+        
+    </main> -->
 </div>
 {% endblock %}

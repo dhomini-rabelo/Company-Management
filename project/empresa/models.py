@@ -5,8 +5,11 @@ from django.db.models.fields.related import ManyToManyField
 from django.utils.safestring import mark_safe
 from django.utils import timezone
 from account.models import User
-from django.db import models
 from decimal import Decimal
+
+
+class Image(Model):
+    image = ImageField(verbose_name='',upload_to='images/%Y/%m/%d/%M/%f')
 
 def get_codigo():
     last_number = 9000000000000000000

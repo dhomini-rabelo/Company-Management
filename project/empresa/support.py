@@ -1,8 +1,10 @@
 from django.core.validators import validate_slug, validate_unicode_slug 
 from decimal import Decimal
 from account.support import checks_null, validate_for_email
-from django.contrib import messages
+from django.contrib import messages, auth
 from datetime import datetime
+from .models import Funcionario
+
 
 def is_none_dict(dictionary: dict, objects: list):
     for obj in objects:
@@ -53,6 +55,12 @@ def validate_cadastro_empresa(request, nome, descricao, data_de_criacao, fundado
         return True
 
 
+def validate_cpf(cpf):
+    funcionario = Funcionario.objects.filter(cpf=cpf)
+    if checks_null([funcionario]):
+        return True
+    return False
+    
 def validate_cadastro_gestor(request, nome, email, foto, codigo,  idade, salario, telefone_pessoal, telefone_comercial, cpf, profissao, bio):
     fields = [nome, email, foto, codigo, telefone_pessoal, telefone_comercial, cpf, profissao, bio]
     if checks_null(fields):
@@ -65,6 +73,10 @@ def validate_cadastro_gestor(request, nome, email, foto, codigo,  idade, salario
         messages.error(request, 'Valor não é válido')
         return False
     elif not validate_for_email(email):
+        messages.error(request, 'Email inválido')
+        return False
+    elif not validate_cpf(cpf):
+        messages.error(request, 'CPF repetido')
         return False
     else:
         return True

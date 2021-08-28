@@ -12,3 +12,15 @@ class GestorForm(ModelForm):
     class Meta:
       exclude = 'nome', 'foto', 'email', 'demitido', 'codigo'
       model = Funcionario
+
+
+class FuncionarioForm(ModelForm):
+    class Meta:
+      exclude = 'codigo', 'demitido'
+      model = Funcionario
+
+class ImageForm(ModelForm):
+    class Meta:
+      fields = '__all__'
+      model = Image
+      

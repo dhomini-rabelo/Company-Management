@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 from decimal import Decimal
 from account.support import *
 from .models import *
-from .forms import EmpresaForm, GestorForm
+from .forms import EmpresaForm, FuncionarioForm, GestorForm, ImageForm
 from .support import *
 from django.utils import timezone
 
@@ -66,7 +66,6 @@ def minha_conta(request):
                     profissoes.append(funcionario.profissao)
                     empresas_funcionario.append(solicitacao.empresa)
                     break
-        profissoes.append('hello')
         context['profissoes'] = iter(profissoes)
         context['empresas_funcionario'] = empresas_funcionario
         
@@ -80,17 +79,21 @@ def minha_conta(request):
 @login_required
 def editar_conta(request):
     if request.method != 'POST':
-        return render(request, 'editar_conta.html')
+        context = {'image_form': ImageForm}
+        return render(request, 'editar_conta.html', context)
     
     usuario = request.POST.get('usuario')
     nome = request.POST.get('nome')
+    foto = request.FILES.get('image')
     email = request.POST.get('email')
     senha_atual = request.POST.get('senha_atual')
     nova_senha = request.POST.get('nova_senha')
     nova_senha2 = request.POST.get('nova_senha2')
     
     user = auth.get_user(request)
-    if (usuario is not None) and usuario  != '':
+    if (str(foto) is not None) and str(foto) != '':
+        user.foto = foto
+    elif (usuario is not None) and usuario  != '':
         user.username = usuario
         messages.add_message(request, messages.SUCCESS, 'Novo nome de usuário cadastrado')
     elif (nome is not None) and nome != '':
@@ -117,6 +120,39 @@ def editar_conta(request):
 @login_required
 def nova_empresa(request):
     return render(request, 'nova_empresa.html')
+
+@login_required
+def cadastro_funcionario(request, link):
+    context = dict()
+    context['form'] = FuncionarioForm
+    empresa = Empresa.objects.get(link=link)
+    context['empresa'] = empresa
+    if request.method != 'POST':
+        return render(request, 'cadastro_funcionario.html', context)
+    
+    nome = request.POST.get('nome')
+    email = request.POST.get('email')
+    foto = request.POST.get('foto')
+    if checks_null([foto]):
+        foto = 'images/default.jpg'
+    idade = request.POST.get('idade')
+    codigo = get_codigo()
+    salario = request.POST.get('salario')
+    telefone_pessoal = request.POST.get('telefone_pessoal')
+    telefone_comercial = request.POST.get('telefone_comercial')
+    cpf = request.POST.get('cpf')
+    profissao = request.POST.get('profissao')
+    bio = request.POST.get('bio')
+    
+    if validate_cadastro_gestor(request, nome, email, foto, codigo, idade, salario, telefone_pessoal, telefone_comercial, cpf, profissao, bio):
+        Funcionario.objects.create(nome=nome, idade=idade, foto=foto, email=email, codigo=codigo, salario=salario, telefone_pessoal=telefone_pessoal, telefone_comercial=telefone_comercial, cpf=cpf, profissao=profissao, bio=bio, ultima_mudanca=timezone.now, data_registro=timezone.now, demitido=False)
+        empresa.funcionarios.add(Funcionario.objects.get(codigo=codigo))
+        empresa.save()
+        return redirect('lista_funcionarios', link=link)
+    else:
+        context['form'] = FuncionarioForm(request.POST)
+        return render(request, 'cadastro_funcionario.html', context)
+    
 
 @login_required
 def cadastro_gestor(request, link):

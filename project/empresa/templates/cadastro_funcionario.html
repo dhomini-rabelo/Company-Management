@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block 'title' %}CADASTRO | FUNCIONÁRIO{% endblock %}
+
+{% block  'content' %}
+<div id="division">
+    {% include 'Parts/_aside.html' %}
+    <main style="width: 650px; border: 3px solid black; padding: 25px; margin-top: 10px; border-radius: 20px;">
+        <h2 class="mt-3 mb-3">Cadastro de funcionário</h2>
+        <form method="POST" action="{% url 'cadastro_funcionario' empresa.link %}" enctype="multipart/form-data" style="text-align: left;">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <br>
+            <div id="btn"  style="text-align: right;">
+                <button type="submit" class="btn btn-primary">SALVAR</button>
+            </div>
+        </form>
+    </main>
+</div>
+<script src="{% static 'form.js' %}"></script>
+{% endblock %}

@@ -16,6 +16,11 @@ class FuncionarioAdmin(admin.ModelAdmin):
 class EmpresaAdmin(admin.ModelAdmin):
     list_display = 'icone_logo', 'nome', 'presidente', 'valor', 'n_funcionarios', 'id'
     list_display_links = 'nome',
+
+@admin.register(Image)
+class ImageAdmin(admin.ModelAdmin):
+    list_display = 'image',
+    list_display_links = 'image',
     
     
 @admin.register(Despesa)
