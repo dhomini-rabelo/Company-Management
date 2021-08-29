@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load filtros %}
+{% block 'title' %}{{empresa}}{% endblock %}
+
+{% block  'content' %}
+<div id="division">
+    {% include 'Parts/_aside.html' %}
+    <main style="width: 650px; border: 3px solid black; padding: 25px; margin-top: 10px; border-radius: 20px;">
+        <h2 class="mt-3 mb-3">Editar dados empresa</h2>
+        <form method="POST" enctype="multipart/form-data" style="text-align: left;">
+            {% csrf_token %}
+<div id="div_id_nome" class="form-group"> <label for="id_nome" class=" requiredField">
+                Nome:</label> <div class=""> <input type="text" name="nome" maxlength="120" class="textinput textInput form-control" required="" id="id_nome" value="{{ empresa.nome }}"> </div> </div> <div id="div_id_logo" class="form-group"> <label for="id_logo" class=" requiredField">
+                Logo(opcional):</label> <div class=""> <input type="file" name="logo" accept="image/*" class="clearablefileinput form-control-file" id="id_logo"> </div> </div> <div id="div_id_foto" class="form-group"> <label for="id_foto" class=" requiredField">
+                Foto(opcional):</label> <div class=""> <input type="file" name="foto" accept="image/*" class="clearablefileinput form-control-file" id="id_foto"> </div> </div> <div id="div_id_descricao" class="form-group"> <label for="id_descricao" class="">
+                Descrição(opcional):</label> <div class=""> <textarea name="descricao" cols="40" rows="2" class="textarea form-control" id="id_descricao"></textarea> </div> </div> <div id="div_id_data_de_criacao" class="form-group"> <label for="id_data_de_criacao" class="">
+                Data de criação:</label> <div class=""> <input type="date" name="data_de_criacao" class="dateinput form-control" id="id_data_de_criacao" required="" value="{{ empresa.data_de_criacao|str }}"> </div> </div> <div id="div_id_fundador" class="form-group"> <label for="id_fundador" class="">
+                Fundador:</label> <div class=""> <input type="text" name="fundador" maxlength="120" class="textinput textInput form-control" id="id_fundador" required="" value="{{ empresa.fundador }}"> </div> </div> <div id="div_id_valor" class="form-group"> <label for="id_valor" class="">
+                Valor de mercado:</label> <div class=""> <input type="number" name="valor" value="{{ empresa.valor|str }}" step="0.01" class="numberinput form-control" id="id_valor" required> </div> </div>
+
+                <div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+                    <div>
+                        <a href="{% url 'escolha_empresa' %}" class="btn btn-primary">VOLTAR</a>
+                        <button type="submit" class="btn btn-danger" name='apagar' value="sim">APAGAR</button>
+                    </div>
+                    <button type="submit" class="btn btn-primary">SALVAR</button>
+                </div>
+        </form>
+    </main>
+</div>
+{% endblock %}

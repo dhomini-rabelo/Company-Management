@@ -122,6 +122,55 @@ def nova_empresa(request):
     return render(request, 'nova_empresa.html')
 
 @login_required
+def editar_empresa(request, link):
+    context = dict()
+    empresa = Empresa.objects.get(link=link) 
+    context['empresa'] = empresa
+    if request.method != 'POST':
+        return render(request, 'editar_empresa.html', context)
+    
+    apagar = request.POST.get('apagar')
+    if apagar == 'sim':
+        messages.success(request, f'{empresa.nome} foi apagada')
+        empresa.delete()
+        return redirect('escolha_empresa')
+    
+    nome = request.POST.get('nome')
+    logo = request.FILES.get('logo')
+    foto = request.FILES.get('foto')
+    descricao = request.POST.get('descricao')
+    data_de_criacao = request.POST.get('data_de_criacao')
+    fundador = request.POST.get('fundador')
+    valor = request.POST.get('valor')
+    
+    if (foto is not None) and str(foto) != 'None':
+        empresa.foto = foto
+    if (logo is not None) and str(logo) != 'None':
+        empresa.logo = logo
+    if (nome is not None) and nome != '':
+        empresa.nome = nome
+    if (data_de_criacao is not None) and data_de_criacao != '' and (not check_invalid_date(data_de_criacao)):
+        empresa.data_de_criacao = data_de_criacao
+    if (descricao is not None) and descricao != '':
+        empresa.descricao = descricao
+    if (fundador is not None) and fundador != '':
+        empresa.fundador = fundador
+    if (valor is not None) and (not check_invalid_decimal(valor)):
+        empresa.valor = valor
+    
+    empresa.save()    
+    return redirect('info_empresa', empresa.link)
+
+@login_required
+def escolha_empresa(request):
+    user = auth.get_user(request)
+    context = dict()
+    if user.empresario:
+        context['empresas_presidente'] = Empresa.objects.filter(presidente=user)
+    return render(request, 'escolha_empresa.html', context)
+        
+
+@login_required
 def editar_funcionario(request, link, id):
     context = dict()
     funcionario = Funcionario.objects.get(id=id)

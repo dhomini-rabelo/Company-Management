@@ -36,8 +36,11 @@ def check_invalid_decimal(value):
     
 
 def check_invalid_date(date: str):
-    date_check = str(datetime.strptime(date, '%Y-%m-%d').date())
-    return not date == date_check
+    try:
+        date_check = str(datetime.strptime(date, '%Y-%m-%d').date())
+        return not date == date_check
+    except:
+        return True
 
 
 def validate_cadastro_empresa(request, nome, descricao, data_de_criacao, fundador, valor):
