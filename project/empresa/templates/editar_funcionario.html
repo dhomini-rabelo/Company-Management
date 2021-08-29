@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load filtros %}
+{% block 'title' %}{{ funcionario.nome }}{% endblock %}
+
+{% block  'content' %}
+<div id="division">
+    {% include 'Parts/_aside.html' %}
+    <main style="width: 650px; border: 3px solid black; padding: 25px; margin-top: 10px; border-radius: 20px;">
+        <h2 class="mt-3 mb-3">Editar funcionário</h2>
+        <form method="POST" enctype="multipart/form-data" style="text-align: left;">
+            {% csrf_token %}
+            <div id="div_id_nome" class="form-group"> <label for="id_nome" class=" requiredField">
+                Nome:</label> <div class=""> <input type="text" name="nome" maxlength="120" class="textinput textInput form-control" required="" id="id_nome" value="{{ funcionario.nome }}"> </div> </div>
+
+            <div id="div_id_idade" class="form-group"> <label for="id_idade" class=" requiredField">
+                Idade:</label> <div class=""> <input type="number" name="idade" min="0" class="numberinput form-control" required="" id="id_idade" value="{{ funcionario.idade }}"> </div> </div> 
+
+            <div id="div_id_foto" class="form-group"> <label for="id_foto" class=" requiredField">
+                Foto de perfil(opcional):</label> <div class=""> <input type="file" name="foto" accept="image/*" class="clearablefileinput form-control-file" id="id_foto"> </div> </div>
+                
+                <div id="div_id_salario" class="form-group"> <label for="id_salario" class=" requiredField">
+                Salário:</label> <div class=""> <input type="number" name="salario" step="0.01" class="numberinput form-control" required="" id="id_salario" value="{{ funcionario.salario|str }}"> </div> </div> 
+                
+                <div id="div_id_telefone_pessoal" class="form-group"> <label for="id_telefone_pessoal" class="">
+                Telefone pessoal(opcional):</label> <div class=""> <input type="text" name="telefone_pessoal" maxlength="20" class="textinput textInput form-control" id="id_telefone_pessoal" value="{{ funcionario.telefone_pessoal }}"> </div> </div> 
+                <div id="div_id_telefone_comercial" class="form-group"> <label for="id_telefone_comercial" class="">
+                Telefone de trabalho:</label> <div class=""> <input type="text" name="telefone_comercial" maxlength="25" class="textinput textInput form-control" id="id_telefone_comercial" required="" value="{{ funcionario.telefone_comercial }}"> </div> </div> 
+                <div id="div_id_cpf" class="form-group"> <label for="id_cpf" class="">
+                CPF:</label> <div class=""> <input type="text" name="cpf" maxlength="25" class="textinput textInput form-control" id="id_cpf" required="" value="{{ funcionario.cpf }}"> </div> </div>
+                
+                <div id="div_id_email" class="form-group"> <label for="id_email" class="">
+                Email:</label> <div class=""> <input type="email" name="email" value="{{ funcionario.email }}" maxlength="254" class="emailinput form-control" id="id_email" required=""> </div> </div>
+                
+                <div id="div_id_profissao" class="form-group"> <label for="id_profissao" class=" requiredField">
+                Profissao:</label> <div class=""> 
+                <input type="text" name="profissao" maxlength="120" class="textinput textInput form-control" required="" id="id_profissao" value="{{ funcionario.profissao }}"> </div> </div> <div id="div_id_bio" class="form-group"> <label for="id_bio" class="">
+                Bio(opcional):</label> <div class=""> <textarea name="bio" cols="40" rows="2" class="textarea form-control" id="id_bio" value="{{ funcionario.bio }}"></textarea> </div> </div>
+            <br>
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+                <div>
+                    <a href="{% url 'funcionario' empresa.link funcionario.id %}" class="btn btn-primary">VOLTAR</a>
+                    <button type="submit" class="btn btn-danger" name='demitido' value="sim">DEMITIR</button>
+                </div>
+                <button type="submit" class="btn btn-primary">SALVAR</button>
+            </div>
+        </form>
+    </main>
+</div>
+{% endblock %}

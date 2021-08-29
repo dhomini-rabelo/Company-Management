@@ -58,8 +58,8 @@ def validate_cadastro_empresa(request, nome, descricao, data_de_criacao, fundado
 def validate_cpf(cpf):
     funcionario = Funcionario.objects.filter(cpf=cpf)
     if checks_null([funcionario]):
-        return True
-    return False
+        return False
+    return True
     
 def validate_cadastro_gestor(request, nome, email, foto, codigo,  idade, salario, telefone_pessoal, telefone_comercial, cpf, profissao, bio):
     fields = [nome, email, foto, codigo, telefone_pessoal, telefone_comercial, cpf, profissao, bio]

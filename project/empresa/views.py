@@ -122,6 +122,59 @@ def nova_empresa(request):
     return render(request, 'nova_empresa.html')
 
 @login_required
+def editar_funcionario(request, link, id):
+    context = dict()
+    funcionario = Funcionario.objects.get(id=id)
+    empresa = Empresa.objects.get(link=link) 
+    context['funcionario'] = funcionario
+    context['empresa'] = empresa 
+    if request.method != 'POST':
+        return render(request, 'editar_funcionario.html', context)
+    
+    demitido = request.POST.get('demitido')
+    if demitido == 'sim':
+        funcionario.demitido = True
+        funcionario.save()
+        messages.success(request, f'{funcionario} demitido')
+        return redirect('lista_funcionarios', empresa.link)
+    nome = request.POST.get('nome')
+    email = request.POST.get('email')
+    foto = request.FILES.get('foto')
+    idade = request.POST.get('idade')
+    salario = request.POST.get('salario')
+    telefone_pessoal = request.POST.get('telefone_pessoal')
+    telefone_comercial = request.POST.get('telefone_comercial')
+    cpf = request.POST.get('cpf')
+    profissao = request.POST.get('profissao')
+    bio = request.POST.get('bio')
+    
+    if (foto is not None) and str(foto) != 'None':
+        funcionario.foto = foto
+    if (nome is not None) and nome != '':
+        funcionario.nome = nome
+    if (profissao is not None) and profissao != '':
+        funcionario.profissao = profissao
+    if (bio is not None) and bio != '':
+        funcionario.bio = bio
+    if (telefone_pessoal is not None) and telefone_pessoal != '':
+        funcionario.telefone_pessoal = telefone_pessoal
+    if (telefone_comercial is not None) and telefone_comercial != '':
+        funcionario.telefone_comercial = telefone_comercial
+    if (email is not None) and email != '' and validate_for_email(email):
+        funcionario.email = email
+    if (cpf is not None) and cpf != '' and (not validate_cpf(cpf)):
+        funcionario.cpf = cpf
+    if (idade is not None) and (not check_invalid_decimal(idade)):
+        funcionario.idade = idade
+    if (salario is not None) and (not check_invalid_decimal(salario)):
+        funcionario.salario = salario
+
+    funcionario.save()
+    return redirect('funcionario', empresa.link, funcionario.id)
+    
+    
+
+@login_required
 def cadastro_funcionario(request, link):
     context = dict()
     context['form'] = FuncionarioForm
@@ -132,8 +185,8 @@ def cadastro_funcionario(request, link):
     
     nome = request.POST.get('nome')
     email = request.POST.get('email')
-    foto = request.POST.get('foto')
-    if checks_null([foto]):
+    foto = request.FILES.get('foto')
+    if foto is not None and checks_null([foto]):
         foto = 'images/default.jpg'
     idade = request.POST.get('idade')
     codigo = get_codigo()

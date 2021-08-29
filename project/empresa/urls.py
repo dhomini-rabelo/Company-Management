@@ -12,5 +12,6 @@ urlpatterns = [
     path('minha-conta/<str:link>/', info_empresa, name='info_empresa'),
     path('minha-conta/<str:link>/funcionarios', lista_funcionarios, name='lista_funcionarios'),
     path('minha-conta/<str:link>/funcionarios/<int:id>', funcionario, name='funcionario'),
+    path('minha-conta/<str:link>/funcionarios/<int:id>/editar', editar_funcionario, name='editar_funcionario'),
     path('minha-conta/<str:link>/funcionarios/cadastro-funcionario', cadastro_funcionario, name='cadastro_funcionario'),
 ]

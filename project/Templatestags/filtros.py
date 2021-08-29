@@ -36,3 +36,7 @@ def _enumerate(iterable):
 @register.filter(name='next')
 def _next(obj):
     return next(obj)
+
+@register.filter(name='str')
+def _str(obj):
+    return str(obj)

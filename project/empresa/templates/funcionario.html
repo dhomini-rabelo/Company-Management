@@ -11,7 +11,9 @@
         <section class="myCompanyf">
             <div class="titleMyCompanyf">
                 <img src="/media/{{ empresa.logo }}" alt="logo" style="width: 27px; height: 17px;">
-                <a href="{% url 'info_empresa' empresa.link %}">{{ empresa.nome }} - {{ empresa.data_de_criacao|ano }}</a>
+                <a href="{% url 'info_empresa' empresa.link %}">{{ empresa.nome }} - {{ empresa.data_de_criacao|ano }}<div style="text-align: right; display: inline-block; width: 52%;">
+                    <a href="{{ request.path }}/editar" class="titleA" style="color: black;">EDITAR</a>
+                  </div>
             </div>
             <div class="bodyMyCompanyf">
                 <div class="funcionario">
