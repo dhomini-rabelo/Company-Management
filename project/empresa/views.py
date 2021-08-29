@@ -298,13 +298,13 @@ def entrar_empresa(request):
         return render(request, 'entrar_empresa.html')
     
     user = auth.get_user(request)
-    
+    minhas_empresas = [empresa for empresa in Empresa.objects.filter(presidente=user)]
     nome_empresa = request.POST.get('nome_empresa')
     id_empresa = request.POST.get('id_empresa')
     
     if not checks_null([nome_empresa, id_empresa]):
         empresa = Empresa.objects.filter(nome=nome_empresa, id=id_empresa)
-        if not checks_null([empresa]):
+        if not checks_null([empresa]) and empresa[0] not in minhas_empresas:
             Solicitacao.objects.create(usuario=user, empresa=empresa[0], status='em_andamento', resposta='nenhuma')
             messages.success(request, 'Solicitação criada com sucesso')
             return redirect('minha_conta')

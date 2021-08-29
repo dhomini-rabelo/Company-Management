@@ -7,7 +7,7 @@
     {% include 'Parts/_aside.html' %}
     <main style="width: 650px; border: 3px solid black; padding: 25px; margin-top: 10px; border-radius: 20px;">
         <h2 class="mt-3 mb-3">Editar funcionário</h2>
-        <form method="POST" enctype="multipart/form-data" style="text-align: left;">
+        <form method="POST" enctype="multipart/form-data" style="text-align: left;" onkeydown="return event.key != 'Enter';">
             {% csrf_token %}
             <div id="div_id_nome" class="form-group"> <label for="id_nome" class=" requiredField">
                 Nome:</label> <div class=""> <input type="text" name="nome" maxlength="120" class="textinput textInput form-control" required="" id="id_nome" value="{{ funcionario.nome }}"> </div> </div>
