@@ -40,3 +40,9 @@ def _next(obj):
 @register.filter(name='str')
 def _str(obj):
     return str(obj)
+
+@register.filter(name='code')
+def _str(code):
+    if code < 2100000000:
+        return True
+    return False

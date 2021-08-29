@@ -121,6 +121,16 @@ def editar_conta(request):
 def nova_empresa(request):
     return render(request, 'nova_empresa.html')
 
+
+@login_required
+def meus_gestores(request):
+    user = auth.get_user(request)
+    context = dict()
+    if user.empresario:
+        empresas = Empresa.objects.filter(presidente=user)
+        context['empresas_presidente'] = empresas
+    return render(request, 'meus_gestores.html', context)
+
 @login_required
 def editar_empresa(request, link):
     context = dict()

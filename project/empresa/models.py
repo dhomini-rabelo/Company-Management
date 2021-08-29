@@ -94,8 +94,8 @@ class Solicitacao(Model):
         ('recusado', 'RECUSADO'),
         ('nenhuma', 'NENHUMA')
     ]
-    status = CharField(max_length=15, choices=POSSIBLE_STATUS)
-    resposta = CharField(max_length=15, choices=RESPOSTAS)
+    status = CharField(max_length=15, choices=POSSIBLE_STATUS, default='em_andamento')
+    resposta = CharField(max_length=15, choices=RESPOSTAS, default='nenhuma')
     
 # class Setor(Model):
 #     nome = CharField(max_length=120)

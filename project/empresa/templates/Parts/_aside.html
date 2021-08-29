@@ -1,8 +1,10 @@
 <aside style="background-color: black;">
     <a href="{% url 'minha_conta' %}">MINHA CONTA</a>
     {% if user.empresario %}
+    <a href="{% url 'meus_gestores' %}">MEUS GESTORES</a>
     <a href="{% url 'escolha_empresa' %}">EDITAR EMPRESA</a>
     {% endif %}
     <a href="{% url 'editar_conta' %}">EDITAR CONTA</a>
+    <a href="{% url 'nova_empresa' %}">NOVA EMPRESA</a>
     <a href="{% url 'logout' %}">SAIR</a>
 </aside>

@@ -4,6 +4,7 @@ from .views import *
 urlpatterns = [
     path('', home, name='home'),
     path('minha-conta/', minha_conta, name='minha_conta'),
+    path('minha-conta/meus-gestores', meus_gestores, name='meus_gestores'),
     path('minha-conta/editar/', editar_conta, name='editar_conta'),
     path('minha-conta/editar-empresa/', escolha_empresa, name='escolha_empresa'),
     path('minha-conta/editar-empresa/<str:link>', editar_empresa, name='editar_empresa'),

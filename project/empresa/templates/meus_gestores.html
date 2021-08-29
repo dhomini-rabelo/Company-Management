@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load filtros %}
+{% block 'title' %}MEUS GESTORES{% endblock %}
+
+{% block  'content' %}
+<div id="division">
+    {% include 'Parts/_aside.html' %}
+    <main>
+        <h2>MEUS GESTORES</h2>
+        {% for empresa in empresas_presidente %}
+        <section class="myCompanyE">
+            <div class="titleMyCompanyE">
+                  <img src="/media/{{ empresa.logo }}" alt="logo" style="width: 60px; height: 35px;">
+                  <a href="{% url 'info_empresa' empresa.link %}" class="titleMyCompanyE">{{ empresa.nome }}</a> 
+              </div>
+        </section>
+        {% for funcionario in empresa.funcionarios.all %}
+        {% if funcionario.codigo|code %}
+        <br>
+        <div class="divMyCompanyf">
+            <section class="myCompanyf">
+                <div class="titleMyCompanyf">
+                    <img src="/media/{{ empresa.logo }}" alt="logo" style="width: 27px; height: 17px;">
+                    <a href="{% url 'info_empresa' empresa.link %}">{{ empresa.nome }} - {{ empresa.data_de_criacao|ano }}<div style="text-align: right; display: inline-block; width: 52%;">
+                </div>
+                <div class="bodyMyCompanyf">
+                    <div class="funcionario">
+                        <img src="/media/{{ funcionario.foto }}" alt="perfil" style="width: 250px; height: 225px;">
+                        <p>
+                          <br>Nome: {{ funcionario.nome }}
+                          <br>Profissão: {{ funcionario.profissao }}
+                          <br>Salário: {{ funcionario.salario }}
+                          <br>Bio: {{ funcionario.bio }}
+                        </p>
+                    </div>
+                    <div class="funcionarioTasks">
+                        <p>Informações do funcionário
+                            <br>Idade: {{ funcionario.idade }}
+                            <br>Telefone pessoal: {{ funcionario.telefone_pessoal }}
+                            <br>Telefone comercial: {{ funcionario.telefone_comercial }}
+                            <br>Email: {{ funcionario.email }}
+                            <br>CPF: {{ funcionario.cpf }}
+                            <br>Data de registro: {{ funcionario.data_registro }}
+                            <br>Última atualização: {{ funcionario.ultima_mudanca }}
+                        </p>
+                    </div>
+                </div>
+            </section>
+          </div>
+          <br>
+        {% endif %}
+        {% endfor %}
+        <br>
+        {% endfor %}
+        <br>
+    </main>
+</div>
+{% endblock %}
