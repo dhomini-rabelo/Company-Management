@@ -1,5 +1,5 @@
 from django.forms import ModelForm, ValidationError
-from .models import *
+from .models import Empresa, Funcionario, Solicitacao, Image
 
 
 class EmpresaForm(ModelForm):

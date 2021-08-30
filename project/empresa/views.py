@@ -3,10 +3,10 @@ from django.contrib import messages, auth
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from decimal import Decimal
-from account.support import *
-from .models import *
+from account.support import is_funcionario, validate_for_email, validate_email, validate_caracteres
+from .models import Empresa, Funcionario, Solicitacao, get_codigo
 from .forms import EmpresaForm, FuncionarioForm, GestorForm, ImageForm
-from .support import *
+from .support import checks_null, is_none_dict, permission, check_invalid_decimal, check_invalid_date, validate_cpf, validate_cadastro_gestor, validate_cadastro_empresa, set_slug
 from django.utils import timezone
 
 def home(request):
