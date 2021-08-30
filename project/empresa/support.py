@@ -3,7 +3,7 @@ from decimal import Decimal
 from account.support import checks_null, validate_for_email
 from django.contrib import messages, auth
 from datetime import datetime
-from .models import Funcionario
+from .models import Funcionario, Empresa
 
 
 def is_none_dict(dictionary: dict, objects: list):
@@ -84,3 +84,14 @@ def validate_cadastro_gestor(request, nome, email, foto, codigo,  idade, salario
     else:
         return True
     
+    
+def permission(request, link):
+    user = auth.get_user(request)
+    empresa = Empresa.objects.get(link=link) 
+    funcionarios = [funcionario for funcionario in empresa.funcionarios.all()]
+    if empresa.presidente == user:
+        return True
+    elif user in funcionarios:
+        return True
+    else:
+        return False

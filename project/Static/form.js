@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', adapt_labels)
 
+
 function adapt_labels(){
     let weTextArea = document.querySelector('textarea')
     let weLabels = document.querySelectorAll('label')
@@ -27,8 +28,29 @@ function adapt_labels(){
         }
         if (type === 'text' && input.getAttribute('name').slice(0, 4) == 'data'){
             input.setAttribute('type', 'date')
-            input.setAttribute('value', '2021-01-01')
+            input.setAttribute('value', strDate())
         }
     })
+}
 
+function adaptTheTime(day, month){
+    if (day>=10&&month>=10){
+        return `${month+1}-${day}`
+    }else if (day>=10&&month<10){
+        return `0${month+1}-${day}`
+    }else if (day<10&&month>=10){
+        return `${month+1}-0${day}`
+    }else if (day<10&&month<10){
+        return `0${month+1}-0${day}`
+    }
+}
+    
+
+function strDate(){
+    let date = new Date()
+    let year = date.getFullYear()
+    let month = date.getMonth()
+    let day = date.getDate()
+    let summaryDate = adaptTheTime(day, month)
+    return `${year}-${summaryDate}`
 }

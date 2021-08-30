@@ -133,6 +133,10 @@ def meus_gestores(request):
 
 @login_required
 def editar_empresa(request, link):
+    if not permission(request, link):
+        return redirect('minha_conta')
+    
+    user = auth.get_user(request)    
     context = dict()
     empresa = Empresa.objects.get(link=link) 
     context['empresa'] = empresa
@@ -143,6 +147,9 @@ def editar_empresa(request, link):
     if apagar == 'sim':
         messages.success(request, f'{empresa.nome} foi apagada')
         empresa.delete()
+        if len(Empresa.presidente.filter(presidente=user)) == 0:
+            user.empresario = False
+            user.save()
         return redirect('escolha_empresa')
     
     nome = request.POST.get('nome')
@@ -182,6 +189,9 @@ def escolha_empresa(request):
 
 @login_required
 def editar_funcionario(request, link, id):
+    if not permission(request, link):
+        return redirect('minha_conta')
+        
     context = dict()
     funcionario = Funcionario.objects.get(id=id)
     empresa = Empresa.objects.get(link=link) 
@@ -235,6 +245,9 @@ def editar_funcionario(request, link, id):
 
 @login_required
 def cadastro_funcionario(request, link):
+    if not permission(request, link):
+        return redirect('minha_conta')
+            
     context = dict()
     context['form'] = FuncionarioForm
     empresa = Empresa.objects.get(link=link)
@@ -268,14 +281,23 @@ def cadastro_funcionario(request, link):
 
 @login_required
 def cadastro_gestor(request, link):
+    if not permission(request, link):
+        return redirect('minha_conta')
+            
     context = dict()
-    if request.method != 'POST':
-        context['form'] = GestorForm
-        return render(request, 'cadastro_gestor.html', context)
-        
     user = auth.get_user(request)
     empresa = Empresa.objects.filter(link=link)[0]
     solicitacao = Solicitacao.objects.get(empresa=empresa, usuario=user)
+    if request.method != 'POST':
+        context['form'] = GestorForm
+        if checks_null([Funcionario.objects.filter(codigo=user.id)]):
+            return render(request, 'cadastro_gestor.html', context)
+        else:
+            solicitacao.status = 'finalizado'
+            solicitacao.save()
+            empresa.funcionarios.add(Funcionario.objects.get(codigo=user.id))
+            empresa.save()
+            return redirect('minha_conta')
 
     nome = request.POST.get('nome_user')
     email = request.POST.get('email_user')
@@ -303,7 +325,7 @@ def cadastro_gestor(request, link):
     
 
 @login_required
-def entrar_empresa(request):
+def entrar_empresa(request):    
     if request.method != 'POST':
         return render(request, 'entrar_empresa.html')
     
@@ -354,15 +376,24 @@ def cadastro_empresa(request):
         return render(request, 'cadastro_empresa.html', context)
     
     link =  set_slug(nome.replace(' ', '-').lower())
-    
+    repeated = len(Empresa.objects.filter(link=link))
+    c = 2
+    while repeated != 1:
+            link += f'-{c}'
+            repeated = len(Empresa.objects.filter(link=link))
+
     Empresa.objects.create(nome=nome, logo=logo, foto=foto, descricao=descricao, data_de_criacao=data_de_criacao,
                            fundador=fundador, valor=valor, presidente=user, link=link)
-    
+    user.empresario = True
+    user.save()
     return redirect('minha_conta')
 
 
 @login_required
 def info_empresa(request, link):
+    if not permission(request, link):
+        return redirect('minha_conta')
+            
     context = dict()
     empresa = Empresa.objects.filter(link=link)
     context['empresa'] = empresa.first
@@ -371,6 +402,9 @@ def info_empresa(request, link):
 
 @login_required
 def lista_funcionarios(request, link):
+    if not permission(request, link):
+        return redirect('minha_conta')
+            
     context = dict()
     empresa = Empresa.objects.get(link=link) # error 404 se nao char link        
     context['empresa'] = empresa
@@ -397,6 +431,9 @@ def lista_funcionarios(request, link):
     
 @login_required
 def funcionario(request, link, id):
+    if not permission(request, link):
+        return redirect('minha_conta')
+            
     context = dict()
     context['funcionario'] = Funcionario.objects.get(id=id)
     context['empresa'] = Empresa.objects.get(link=link) 
