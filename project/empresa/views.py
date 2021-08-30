@@ -406,14 +406,16 @@ def lista_funcionarios(request, link):
         return redirect('minha_conta')
             
     context = dict()
-    empresa = Empresa.objects.get(link=link) # error 404 se nao char link        
+    empresa = Empresa.objects.get(link=link)     
     context['empresa'] = empresa
     funcionarios = empresa.funcionarios.filter(demitido=False).order_by('nome')
     
     nome = request.GET.get('nome')
     salario = request.GET.get('salario')
     profissao = request.GET.get('profissao')
-
+    demitido = request.GET.get('demitido')
+    if demitido is not None and demitido == 'true':
+        funcionarios = empresa.funcionarios.filter(demitido=True).order_by('nome')
     if nome is not None and nome.strip() != '':
         funcionarios = funcionarios.filter(nome__icontains=nome)
     if profissao is not None and profissao.strip() != '':
@@ -435,9 +437,42 @@ def funcionario(request, link, id):
         return redirect('minha_conta')
             
     context = dict()
-    context['funcionario'] = Funcionario.objects.get(id=id)
-    context['empresa'] = Empresa.objects.get(link=link) 
+    funcionario = Funcionario.objects.get(id=id)
+    empresa = Empresa.objects.get(link=link)
+    if funcionario.demitido == True:
+        return redirect('recontratar', empresa.link, funcionario.id)
+    
+    context['funcionario'] = funcionario
+    context['empresa'] = empresa 
     return render(request, 'funcionario.html', context)
+
+
+@login_required
+def recontratar(request, link, id):
+    if not permission(request, link):
+        return redirect('minha_conta')
+    context = dict()
+    funcionario = Funcionario.objects.get(id=id)
+    empresa = Empresa.objects.get(link=link)
+    if funcionario.demitido == False:
+        return redirect('funcionario', empresa.link, funcionario.id)
+    
+    context['funcionario'] = funcionario
+    context['empresa'] = empresa 
+    if request.method != 'POST':
+        return render(request, 'recontratar.html', context)
+    
+    resposta = request.POST.get('resposta')
+    if resposta is None:
+        return render(request, 'recontratar.html', context)
+    elif resposta == 'sim':
+        funcionario.demitido = False
+        funcionario.save()
+        messages.success(request, f'{funcionario.nome} recontratado')
+        return redirect('funcionario', empresa.link, funcionario.id)
+    else:
+        return redirect('lista_funcionarios', empresa.link)
+
 
         
 """

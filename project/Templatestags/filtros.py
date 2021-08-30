@@ -41,8 +41,22 @@ def _next(obj):
 def _str(obj):
     return str(obj)
 
+@register.filter(name='demitido')
+def _demitido(request):
+    nome = request.GET.get('nome')
+    demitido = request.GET.get('demitido')
+    p = request.GET.get('p')
+    if p is None and nome is None and demitido is None:
+        return '?demitido=true'
+    elif demitido == '':
+        return f'{request.get_full_path()}true' 
+    elif demitido == 'true':
+        return f'{request.get_full_path()[:-4]}' 
+    else:
+        return f'{request.get_full_path()}&demitido=true' 
+
 @register.filter(name='code')
-def _str(code):
+def _code(code):
     if code < 2100000000:
         return True
     return False

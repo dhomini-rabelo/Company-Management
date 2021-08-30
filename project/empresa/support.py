@@ -88,10 +88,11 @@ def validate_cadastro_gestor(request, nome, email, foto, codigo,  idade, salario
 def permission(request, link):
     user = auth.get_user(request)
     empresa = Empresa.objects.get(link=link) 
+    funcionario = Funcionario.objects.filter(codigo=user.id)
     funcionarios = [funcionario for funcionario in empresa.funcionarios.all()]
     if empresa.presidente == user:
         return True
-    elif user in funcionarios:
+    elif funcionario[0] in funcionarios:
         return True
     else:
         return False

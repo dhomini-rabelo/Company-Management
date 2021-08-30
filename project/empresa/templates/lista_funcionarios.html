@@ -10,9 +10,10 @@
         <section class="myCompanyE">
             <div class="titleMyCompanyE">
                   <img src="/media/{{ empresa.logo }}" alt="logo" style="width: 60px; height: 35px;">
-                  <a href="{% url 'info_empresa' empresa.link %}" class="titleMyCompanyE">{{ empresa.nome }}</a> - Lista Funcionários
-                  <div style="text-align: right; display: inline-block; width: 20%;">
+                  <a href="{% url 'info_empresa' empresa.link %}" class="titleMyCompanyE">{{ empresa.nome }}</a> - <a href="{% url 'lista_funcionarios' empresa.link %}" class="titleMyCompanyE">Lista de funcionários</a> 
+                  <div style="display: inline-block;">
                     <a href="{% url 'cadastro_funcionario' empresa.link %}" class="titleA">ADICIONAR FUNCIONARIO</a>
+                    <a href="{{ request|demitido }}" class="titleA">DEMITIDOS</a>
                   </div>
               </div>
         </section>
