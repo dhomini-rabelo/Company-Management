@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages, auth
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 from decimal import Decimal
 from account.support import is_funcionario, validate_for_email, validate_email, validate_caracteres
@@ -193,7 +193,7 @@ def editar_funcionario(request, link, id):
         return redirect('minha_conta')
         
     context = dict()
-    funcionario = Funcionario.objects.get(id=id)
+    funcionario = get_object_or_404(Funcionario, id=id)
     empresa = Empresa.objects.get(link=link) 
     context['funcionario'] = funcionario
     context['empresa'] = empresa 
