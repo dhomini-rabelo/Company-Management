@@ -270,7 +270,11 @@ def cadastro_funcionario(request, link):
     bio = request.POST.get('bio')
     
     if validate_cadastro_gestor(request, nome, email, foto, codigo, idade, salario, telefone_pessoal, telefone_comercial, cpf, profissao, bio):
-        Funcionario.objects.create(nome=nome, idade=idade, foto=foto, email=email, codigo=codigo, salario=salario, telefone_pessoal=telefone_pessoal, telefone_comercial=telefone_comercial, cpf=cpf, profissao=profissao, bio=bio, ultima_mudanca=timezone.now, data_registro=timezone.now, demitido=False)
+        Funcionario.objects.create(
+            nome=nome, idade=idade, foto=foto, email=email, codigo=codigo, salario=salario, 
+            telefone_pessoal=telefone_pessoal, telefone_comercial=telefone_comercial, cpf=cpf, 
+            profissao=profissao, bio=bio, ultima_mudanca=timezone.now, data_registro=timezone.now, demitido=False
+        )
         empresa.funcionarios.add(Funcionario.objects.get(codigo=codigo))
         empresa.save()
         return redirect('lista_funcionarios', link=link)
@@ -312,7 +316,11 @@ def cadastro_gestor(request, link):
     bio = request.POST.get('bio')
     
     if validate_cadastro_gestor(request, nome, email, foto, codigo,  idade, salario, telefone_pessoal, telefone_comercial, cpf, profissao, bio):
-        Funcionario.objects.create(nome=nome, idade=idade, foto=foto, email=email, codigo=codigo, salario=salario, telefone_pessoal=telefone_pessoal, telefone_comercial=telefone_comercial, cpf=cpf, profissao=profissao, bio=bio, ultima_mudanca=timezone.now, data_registro=timezone.now, demitido=False)
+        Funcionario.objects.create(
+            nome=nome, idade=idade, foto=foto, email=email, codigo=codigo, salario=salario, 
+            telefone_pessoal=telefone_pessoal, telefone_comercial=telefone_comercial, cpf=cpf, 
+            profissao=profissao, bio=bio, ultima_mudanca=timezone.now, data_registro=timezone.now, demitido=False
+        )
         solicitacao.status = 'finalizado'
         solicitacao.save()
         empresa.funcionarios.add(Funcionario.objects.get(codigo=user.id))
@@ -378,8 +386,8 @@ def cadastro_empresa(request):
     link =  set_slug(nome.replace(' ', '-').lower())
     repeated = len(Empresa.objects.filter(link=link))
     c = 2
-    while repeated != 1:
-            link += f'-{c}'
+    while repeated != 0:
+            link += f'-{c}' if c == 2 else f'{c}'
             repeated = len(Empresa.objects.filter(link=link))
 
     Empresa.objects.create(nome=nome, logo=logo, foto=foto, descricao=descricao, data_de_criacao=data_de_criacao,
@@ -472,28 +480,3 @@ def recontratar(request, link, id):
         return redirect('funcionario', empresa.link, funcionario.id)
     else:
         return redirect('lista_funcionarios', empresa.link)
-
-
-        
-"""
-{% extends 'base.html' %}
-
-{% block 'title' %}{% endblock %}
-
-{% block  'content' %}
-{% endblock %}
-
------------------------
-
-{% extends 'base.html' %}
-
-{% block 'title' %}{% endblock %}
-
-{% block  'content' %}
-<div id="division">
-    {% include 'Parts/_aside.html' %}
-    <main>
-    </main>
-</div>
-{% endblock %}
-"""
