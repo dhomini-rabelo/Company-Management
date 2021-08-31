@@ -1,7 +1,8 @@
+{% load static %}
 <header>
     <nav class="header">
         <div class="title">
-            <a href="{% url 'home' %}">COMPANY MANAGEMENT</a>
+            <a href="{% url 'home' %}"><img src="{% static 'logo.svg' %}" alt="logo" style="height: 30px;"> <span style="font-size: 18px;">COMPANY MANAGEMENT</span></a>
         </div>
         <div class="optionsHeader">
             <a href="{% url 'login' %}">ENTRAR</a>

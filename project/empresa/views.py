@@ -367,12 +367,12 @@ def cadastro_empresa(request):
     nome = request.POST.get('nome')
     context['form'] = EmpresaForm(request.POST, request.FILES)
     
-    logo = request.POST.get('logo')
-    if checks_null([logo]):
+    logo = request.FILES.get('logo')
+    if checks_null([str(logo)]):
         logo = 'images/logo.jpg'
         
-    foto = request.POST.get('foto')
-    if checks_null([foto]):
+    foto = request.FILES.get('foto')
+    if checks_null([str(foto)]):
         foto = 'images/empresa.jpg'
     
     descricao = request.POST.get('descricao')

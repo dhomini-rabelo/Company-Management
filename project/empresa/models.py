@@ -49,7 +49,7 @@ class Funcionario(Model):
     
 class Empresa(Model):
     nome = CharField(max_length=120)
-    logo = ImageField(upload_to='images/company/%Y/%m/%d/%M/%f', default='images/logo.jpg')
+    logo = ImageField(upload_to='images/company/%Y/%m/%d/%M/%f', default='images/logo.png')
     foto = ImageField(upload_to='images/company/%Y/%m/%d/%M/%f', default='images/empresa.jpg')
     descricao = TextField('Descrição', blank=True) 
     presidente = ForeignKey(User, on_delete=DO_NOTHING)
