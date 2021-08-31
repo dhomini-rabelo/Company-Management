@@ -2,7 +2,7 @@
 
 {% block 'title' %}Login{% endblock %}
 {% block  'content' %}
-<form method="POST" action="{% url 'login' %}" enctype="multipart/form-data">
+<form method="POST" action="{% url 'login' %}" style="height: 700px;">
     {% csrf_token %}
     <main class="login">
         <h1>Faça login</h1>

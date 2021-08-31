@@ -122,6 +122,10 @@ def nova_empresa(request):
     return render(request, 'nova_empresa.html')
 
 
+def suporte(request):
+    return render(request, 'suporte.html')
+
+
 @login_required
 def meus_gestores(request):
     user = auth.get_user(request)
@@ -285,9 +289,6 @@ def cadastro_funcionario(request, link):
 
 @login_required
 def cadastro_gestor(request, link):
-    if not permission(request, link):
-        return redirect('minha_conta')
-            
     context = dict()
     user = auth.get_user(request)
     empresa = Empresa.objects.filter(link=link)[0]

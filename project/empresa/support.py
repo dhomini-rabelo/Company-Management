@@ -61,8 +61,8 @@ def validate_cadastro_empresa(request, nome, descricao, data_de_criacao, fundado
 def validate_cpf(cpf):
     funcionario = Funcionario.objects.filter(cpf=cpf)
     if checks_null([funcionario]):
-        return False
-    return True
+        return True
+    return False
     
 def validate_cadastro_gestor(request, nome, email, foto, codigo,  idade, salario, telefone_pessoal, telefone_comercial, cpf, profissao, bio):
     fields = [nome, email, foto, codigo, telefone_pessoal, telefone_comercial, cpf, profissao, bio]
@@ -90,9 +90,12 @@ def permission(request, link):
     empresa = Empresa.objects.get(link=link) 
     funcionario = Funcionario.objects.filter(codigo=user.id)
     funcionarios = [funcionario for funcionario in empresa.funcionarios.all()]
-    if empresa.presidente == user:
-        return True
-    elif funcionario[0] in funcionarios:
-        return True
-    else:
+    try:
+        if empresa.presidente == user:
+            return True
+        elif funcionario[0] in funcionarios:
+            return True
+        else:
+            return False
+    except IndexError:
         return False
