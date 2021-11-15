@@ -1,1 +1,1 @@
-web: gunicorn COMPANY.wsgi –pythonpath=project --log-file -
+web: gunicorn project.COMPANY.wsgi –pythonpath=project --log-file -
