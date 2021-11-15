@@ -1,0 +1,1 @@
+from project.account.apps import AccountConfig
