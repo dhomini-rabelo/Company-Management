@@ -125,7 +125,7 @@ SESSION_COOKIE_AGE = 60*60*24*7
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-AUTH_USER_MODEL = 'account.User'
+AUTH_USER_MODEL = 'project.account.User'
 
 
 django_on_heroku.settings(locals())
