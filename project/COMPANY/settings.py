@@ -5,7 +5,7 @@ import django_on_heroku
 
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = 'django-insecure-g_5ne(!jn1%zuy+&h(p(xiki+(ps-k*9n_(06f(7)9j8_jbztj'
@@ -45,7 +45,7 @@ ROOT_URLCONF = 'COMPANY.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [Path(BASE_DIR, 'project/Templates')],
+        'DIRS': [Path(BASE_DIR, 'Templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,7 +68,7 @@ WSGI_APPLICATION = 'COMPANY.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'project/db.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -113,7 +113,7 @@ MESSAGE_TAGS = {
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [Path(BASE_DIR, 'project/Static')]
+STATICFILES_DIRS = [Path(BASE_DIR, 'Static')]
 STATIC_ROOT = Path('static')
 
 MEDIA_ROOT = Path(BASE_DIR,'Media')
