@@ -45,7 +45,7 @@ ROOT_URLCONF = 'COMPANY.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [Path(BASE_DIR, 'Templates')],
+        'DIRS': [Path(BASE_DIR, 'project/Templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,7 +68,7 @@ WSGI_APPLICATION = 'COMPANY.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'project/db.sqlite3',
     }
 }
 
@@ -113,7 +113,7 @@ MESSAGE_TAGS = {
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [Path(BASE_DIR, 'Static')]
+STATICFILES_DIRS = [Path(BASE_DIR, 'project/Static')]
 STATIC_ROOT = Path('static')
 
 MEDIA_ROOT = Path(BASE_DIR,'Media')
@@ -125,7 +125,7 @@ SESSION_COOKIE_AGE = 60*60*24*7
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-AUTH_USER_MODEL = 'account.User'
+AUTH_USER_MODEL = 'project.account.User'
 
 
 django_on_heroku.settings(locals())
