@@ -1,5 +1,7 @@
 from pathlib import Path
 from django.contrib.messages import constants
+from decouple import config
+import django_on_heroku
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -7,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-g_5ne(!jn1%zuy+&h(p(xiki+(ps-k*9n_(06f(7)9j8_jbztj'
 
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool, default=False)
 
 ALLOWED_HOSTS = []
 
@@ -123,3 +125,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'account.User'
+
+
+django_on_heroku.settings(locals())
