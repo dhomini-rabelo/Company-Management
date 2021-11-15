@@ -3,7 +3,7 @@ from django.contrib.messages import constants
 from decouple import config
 import django_on_heroku
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 
@@ -23,8 +23,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
-    'account.apps.AccountConfig',
-    'empresa.apps.EmpresaConfig',
+    'project.account.apps.AccountConfig',
+    'project.empresa.apps.EmpresaConfig',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
