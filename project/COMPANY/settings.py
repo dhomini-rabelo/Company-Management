@@ -24,8 +24,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
-    'project.account.apps.AccountConfig',
-    'project.empresa.apps.EmpresaConfig',
+    'account.apps.AccountConfig',
+    'empresa.apps.EmpresaConfig',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -125,7 +125,7 @@ SESSION_COOKIE_AGE = 60*60*24*7
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-AUTH_USER_MODEL = 'project.account.User'
+AUTH_USER_MODEL = 'account.User'
 
 
 django_on_heroku.settings(locals())
