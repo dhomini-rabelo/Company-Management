@@ -39,13 +39,8 @@ Meu primeiro projeto Django, para colocar em prática o que foi estudado em curs
 </li>
 
 <li style="margin-top: 30px;">
-<h3>Cadastro</h3>
-<img src="./readme/cadastro.gif" alt="home-page-image" style="max-width: 100%; display: block; margin: 0 auto; margin-top: 20px;">
-</li>
-
-<li style="margin-top: 30px;">
-<h3>Login</h3>
-<img src="./readme/login.gif" alt="home-page-image" style="max-width: 100%; display: block; margin: 0 auto; margin-top: 20px;">
+<h3>Sistema de administração</h3>
+<img src="./readme/admin.PNG" alt="home-page-image" style="max-width: 100%; display: block; margin: 0 auto; margin-top: 20px;">
 </li>
 
 </ul>
